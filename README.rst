@@ -44,8 +44,9 @@ Arbitrum, and Optimism, revealing a **668m USDC** increase between
 
 Tools
 ==========
-This project utilizes Subgraphs from `The Graph <https://thegraph.com/explorer>`__,and `Subgrounds <https://docs.playgrounds.network/>`__, 
-an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__.
+This project utilizes Subgraphs from `The Graph <https://thegraph.com/explorer>`__ and `DataStreams <https://github.com/Evan-Kim2028/DataStreams>`__, 
+a subgraph query library built on top of `Subgrounds <https://docs.playgrounds.network/>`__, 
+an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__. Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
 
 Subgraphs
 ---------
@@ -56,20 +57,34 @@ Subgrounds
 Subgrounds is an open-source Python library for interfacing with and querying Subgraphs. 
 It simplifies the process of extracting and processing data from various blockchains.
 
+DataStreams
+-----------
+DataStreams is a subgraph query library built that extends the functionality of Subgrounds.
+
+Polars
+------
+Polars is a blazingly fast DataFrames library implemented in Rust using Apache Arrow Columnar Format as the memory model.
+
 Requirements
 ============
 * Python 3.10 or higher
+* DataStreams
 * Subgrounds
+* Polars
+
 
 Installation
 ============
 1. Install Python (if not already installed): https://www.python.org/downloads/
-2. Install the required libraries:
+2. Install DataStreams:
 
    .. code:: bash
 
-      pip install subgrounds
+      pip install git+https://github.com/Evan-Kim2028/DataStreams.git
 
-Once you have subgrounds installed, you can start playing with the notebook 
+DataStreams uses Subgrounds as a dependency so once you install DataStreams, there is no need to install Subgrounds.
+3. Install Polars
 
-Jump into the `src <https://github.com/Evan-Kim2028/usdc_depeg/tree/master/src>`__ folder to explore the notebooks!
+    .. code:: bash
+    
+        pip install polars
