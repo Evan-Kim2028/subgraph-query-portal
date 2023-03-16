@@ -34,16 +34,42 @@ usdc_depeg
 ==========
 
 
-    Add a short description here!
+Cross-Chain USDC Supply Data Insights using Subgraphs, Subgrounds and DataStreams
 
+Overview
+==========
+A comprehensive analysis of USDC supply in LPs across Ethereum, Polygon,
+Arbitrum, and Optimism, revealing a **668m USDC** increase between
+**March 9th-13th**.
 
-A longer description of your project goes here...
+Tools
+==========
+This project utilizes Subgraphs from `The Graph <https://thegraph.com/explorer>`__,and `Subgrounds <https://docs.playgrounds.network/>`__, 
+an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__.
 
+Subgraphs
+---------
+Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL. 
 
-.. _pyscaffold-notes:
+Subgrounds
+----------
+Subgrounds is an open-source Python library for interfacing with and querying Subgraphs. 
+It simplifies the process of extracting and processing data from various blockchains.
 
-Note
-====
+Requirements
+============
+* Python 3.10 or higher
+* Subgrounds
 
-This project has been set up using PyScaffold 4.3.1. For details and usage
-information on PyScaffold see https://pyscaffold.org/.
+Installation
+============
+1. Install Python (if not already installed): https://www.python.org/downloads/
+2. Install the required libraries:
+
+   .. code:: bash
+
+      pip install subgrounds
+
+Once you have subgrounds installed, you can start playing with the notebook 
+
+Jump into the `src <https://github.com/Evan-Kim2028/usdc_depeg/tree/master/src>`__ folder to explore the notebooks!
