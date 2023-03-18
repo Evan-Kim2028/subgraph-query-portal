@@ -57,5 +57,5 @@ env*/
 # Working files
 data/
 tests/*.ipynb
-src/metrics/*
-queries(old)/*
+src/metrics/
+queries_old/
