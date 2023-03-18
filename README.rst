@@ -70,12 +70,14 @@ Installation
 ============
 
 1. Install virtualenv:
+
    .. code:: bash
 
-      python -m venv .venv          # create virtual environment named .venv      
-      source .venv/bin/activate     # activate virtual environment
+      python -m venv .venv            
+      source .venv/bin/activate   
 
 2. Install from github source:
+
    .. code:: bash
 
       pip install git+https://github.com/Evan-Kim2028/subgraph-query-portal.git
@@ -86,16 +88,20 @@ Examples
 Run the following commands from the root directory of the project.
 
 1. Query Univ3 Swap data:
+
    .. code:: bash
 
       python examples/query_univ3_swaps.py
 
+
 Import Package
 ========================
 If you want to use this package in your own project, you can import as follows:
+
    .. code:: bash
 
       import queryportal
+
 
 Local Development
 =============================
@@ -103,6 +109,9 @@ To enable editable mode, use the pip install -e . command.
 This installs the package in a way that allows you to modify the source code and have the changes take effect immediately. 
 However, be cautious when editing the source files, especially if you have also installed the package from GitHub. 
 This may result in conflicting versions of the package.
+
    .. code:: bash
 
       pip install -e .
+
+
