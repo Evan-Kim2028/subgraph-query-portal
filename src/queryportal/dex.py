@@ -23,11 +23,20 @@ class Dex:
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
         """
-        get_swap_data() hardcodes logic to preprocess swap data from a dex subgraph using DataStreams
+        Parameters:
+        start_time: int - unix timestamp of the start time of the query range
+        end_time: int - unix timestamp of the end time of the query range
+        query_size: int - number of swaps to query
+        save_data: bool - whether to save the data to a parquet file. Default = False
+        add_endpoint_col: bool - whether to add a column to the dataframe with the endpoint url name. Default = True
+        
+        query_swap_data() queries a DEX swaps schema from a Subgraph endpiont. It returns a Polars DataFrame of swap data.
+        Returns a Polars DataFrame of swap data.
+
         
         TODO - to use token_in and token_out, need to construct a field path from the ground up specify which query parameters to use. Currently it's all or none approach and it's too rigid
 
-        Returns a Polars DataFrame of swap data.
+
         """
         # load Subgrounds object
         sg = Subgrounds()
@@ -76,9 +85,7 @@ class Dex:
     def date_to_time(self, dt: datetime) -> int:
         """
         date_to_time() converts a datetime object to a timestamp
+        TODO - 3/18/23 - Do I add helper functions to convert between datetime and timestamp?
         """
-
         return int(round(dt.timestamp()))
     
-
-    # TODO - 3/18/23 - Do I add helper functions to convert between datetime and timestamp?
