@@ -80,6 +80,15 @@ Installation
       pip install git+https://github.com/Evan-Kim2028/subgraph-query-portal.git
 
 
+Run a dex query test
+====================
+1. Run the following command from the root directory of the project:
+
+   .. code:: bash
+
+      python -m subgraph_query_portal.tests.test_dex_query
+
+
 Making Changes to Source Code
 =============================
 1. Enable editable mode. Instructs pip to install the package in a way that allows you to make changes to the package's source code and have those changes take effect immediately
