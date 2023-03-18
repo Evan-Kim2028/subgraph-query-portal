@@ -38,12 +38,13 @@ This library is a collection of reusable public goods Subgraph queriess to obtai
 
 Tools
 ==========
-This project utilizes Subgraph endpoints from `Messari <https://subgraphs.messari.io>`__ and `Subgrounds <https://docs.playgrounds.network/>`__, 
-an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__. Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
+This project utilizes Subgraph endpoints from `Messari <https://messari.io/report/the-graph-foundation-awards-messari-usd12-5mm-in-first-ever-core-subgraph-developer-grant-to-build-and-standardize-subgraphs>`__ 
+and `Subgrounds <https://docs.playgrounds.network/>`__, an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__. 
+Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
 
 Subgraphs
 ---------
-Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints.
+Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints. A list of Messari Endpoints can be found `here https://subgraphs.messari.io`__.
 
 Subgrounds
 ----------
@@ -54,11 +55,12 @@ Polars
 ------
 Polars is a blazingly fast DataFrames library implemented in Rust using Apache Arrow Columnar Format as the memory model.
 
-Requirements
+Library Requirements
 ============
 * Python 3.10 or higher
 * Subgrounds
 * Polars
+* Pyarrow
 
 
 Installation
