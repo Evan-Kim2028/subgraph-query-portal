@@ -4,7 +4,7 @@ import polars as pl
 from dataclasses import dataclass
 from datetime import datetime
 from subgrounds import Subgrounds
-from benchmark import Benchmark
+from queryportal.benchmark import Benchmark
 
 @dataclass
 class Dex:
