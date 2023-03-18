@@ -80,14 +80,19 @@ Installation
       pip install git+https://github.com/Evan-Kim2028/subgraph-query-portal.git
 
 
-Run a dex query test
-====================
+Example: run a dex query
+========================
 1. Run the following command from the root directory of the project:
 
    .. code:: bash
 
-      python -m subgraph_query_portal.tests.test_dex_query
+      python examples/query_univ3_swaps.py
 
+Import Package
+========================
+   .. code:: bash
+
+      import queryportal
 
 Making Changes to Source Code
 =============================

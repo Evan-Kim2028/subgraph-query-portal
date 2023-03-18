@@ -22,6 +22,6 @@ df = my_dex.query_swap_data(
     start_time=start_time, 
     end_time=end_time, 
     query_size=query_size,
-    save_data=False,
+    save_data=True,
     add_endpoint_col=True
     )
