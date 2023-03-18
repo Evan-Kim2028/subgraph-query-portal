@@ -30,26 +30,23 @@
 |
 
 ==========
-usdc_depeg
+Subgraph Query Portal
 ==========
 
-
-Cross-Chain USDC Supply Data Insights using Subgraphs, Subgrounds and DataStreams
+This library is a collection of Subgraph queries to obtain cross-chain data for researchers and tool builders powered by `Messari Subgraph Endpoints <https://subgraphs.messari.io/>`__, 
 
 Overview
 ==========
-A comprehensive analysis of USDC supply in LPs across Ethereum, Polygon,
-Arbitrum, and Optimism, revealing a **668m USDC** increase between
-**March 9th-13th**.
+A collection of reusable public goods subgraph queries.
 
 Tools
 ==========
-This project utilizes Subgraphs from `The Graph <https://thegraph.com/explorer>`__ and `Subgrounds <https://docs.playgrounds.network/>`__, 
+This project utilizes Subgraph endpoints from `Messari <https://subgraphs.messari.io>`__ and `Subgrounds <https://docs.playgrounds.network/>`__, 
 an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__. Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
 
 Subgraphs
 ---------
-Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints. 
+Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints.
 
 Subgrounds
 ----------
