@@ -44,22 +44,17 @@ Arbitrum, and Optimism, revealing a **668m USDC** increase between
 
 Tools
 ==========
-This project utilizes Subgraphs from `The Graph <https://thegraph.com/explorer>`__ and `DataStreams <https://github.com/Evan-Kim2028/DataStreams>`__, 
-a subgraph query library built on top of `Subgrounds <https://docs.playgrounds.network/>`__, 
+This project utilizes Subgraphs from `The Graph <https://thegraph.com/explorer>`__ and `Subgrounds <https://docs.playgrounds.network/>`__, 
 an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__. Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
 
 Subgraphs
 ---------
-Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL. 
+Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints. 
 
 Subgrounds
 ----------
 Subgrounds is an open-source Python library for interfacing with and querying Subgraphs. 
 It simplifies the process of extracting and processing data from various blockchains.
-
-DataStreams
------------
-DataStreams is a subgraph query library built that extends the functionality of Subgrounds.
 
 Polars
 ------
@@ -75,14 +70,12 @@ Requirements
 
 Installation
 ============
-1. Install Python (if not already installed): https://www.python.org/downloads/
 2. Install DataStreams:
 
    .. code:: bash
 
-      pip install git+https://github.com/Evan-Kim2028/DataStreams.git
+      pip install subgrounds
 
-DataStreams uses Subgrounds as a dependency so once you install DataStreams, there is no need to install Subgrounds.
 3. Install Polars
 
     .. code:: bash
