@@ -63,14 +63,13 @@ Polars is a blazingly fast DataFrames library implemented in Rust using Apache A
 Requirements
 ============
 * Python 3.10 or higher
-* DataStreams
 * Subgrounds
 * Polars
 
 
 Installation
 ============
-2. Install DataStreams:
+2. Install Subgrounds:
 
    .. code:: bash
 
