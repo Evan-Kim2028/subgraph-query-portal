@@ -29,11 +29,13 @@
 
 |
 
-==========
+=====================
 Subgraph Query Portal
-==========
+=====================
 
-This library is a collection of reusable public goods Subgraph queriess to obtain cross-chain data for researchers and tool builders powered by `Messari Subgraph Endpoints <https://subgraphs.messari.io/>`__, 
+
+This library is a collection of public goods Subgraph queriess to obtain cross-chain data for researchers and tool builders. Incorporate subgraph data seamlessly into existing 
+web3 on-chain data analytics workflows in Python.
 
 
 Tools
@@ -44,20 +46,21 @@ Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
 
 Subgraphs
 ---------
-Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints. A list of Messari Endpoints can be found `here https://subgraphs.messari.io`__.
+Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints. For a list of standardized subgraph endpoints by Messari, see `here https://subgraphs.messari.io`__.
 
 Subgrounds
 ----------
-Subgrounds is an open-source Python library for interfacing with and querying Subgraphs. 
-It simplifies the process of extracting and processing data from various blockchains.
+Subgrounds is a Python library that allows seamless Subgraphs into a Python data analytics workflow. 
+It provides an open-source solution for interfacing with and querying Subgraphs, streamlining the process of extracting and processing blockchain data. 
+With Subgrounds, you can easily incorporate Subgraphs into your Python data pipeline, enabling you to seamlessly integrate blockchain data into your data analytics web3 workflow.
 
 Polars
 ------
 Polars is a blazingly fast DataFrames library implemented in Rust using Apache Arrow Columnar Format as the memory model.
 
-Library Requirements
+Library Dependencies
 ============
-* Python 3.10 or higher
+* Python >= 3.10
 * Subgrounds
 * Polars
 * Pyarrow
@@ -80,7 +83,7 @@ Installation
       pip install git+https://github.com/Evan-Kim2028/subgraph-query-portal.git
 
 
-Example: run a dex query
+Example: Query Univ3 Swap data
 ========================
 1. Run the following command from the root directory of the project:
 
@@ -90,13 +93,18 @@ Example: run a dex query
 
 Import Package
 ========================
+If you want to use this package in your own project, you can import as follows:
+
    .. code:: bash
 
       import queryportal
 
-Making Changes to Source Code
+Local Development
 =============================
-1. Enable editable mode. Instructs pip to install the package in a way that allows you to make changes to the package's source code and have those changes take effect immediately
+To enable editable mode, use the pip install -e . command. 
+This installs the package in a way that allows you to modify the source code and have the changes take effect immediately. 
+However, be cautious when editing the source files, especially if you have also installed the package from GitHub. 
+This may result in conflicting versions of the package.
 
    .. code:: bash
 
