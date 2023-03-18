@@ -52,6 +52,7 @@ MANIFEST
 .venv*/
 .conda*/
 .python-version
+env*/
 
 data/
 tests/*.ipynb

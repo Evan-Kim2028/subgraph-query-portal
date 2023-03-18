@@ -1,4 +1,4 @@
-from dex import Dex
+from queryportal.dex import Dex
 from datetime import datetime
 
 
