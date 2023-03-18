@@ -10,8 +10,8 @@ my_dex = Dex()
 start_date = datetime(2023, 3, 9)
 end_date = datetime(2023, 3, 12)
 
-start_timestamp = my_dex.datetime_to_timestamp(start_date)
-end_timestamp = my_dex.datetime_to_timestamp(end_date)
+start_timestamp = my_dex.date_to_time(start_date)
+end_timestamp = my_dex.date_to_time(end_date)
 
 print(f'start_timestamp: {start_timestamp}')
 print(f'end_timestamp: {end_timestamp}')

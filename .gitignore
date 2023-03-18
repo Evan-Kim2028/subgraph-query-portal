@@ -54,3 +54,4 @@ MANIFEST
 .python-version
 
 data/
+tests/*.ipynb
