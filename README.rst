@@ -33,11 +33,8 @@
 Subgraph Query Portal
 ==========
 
-This library is a collection of Subgraph queries to obtain cross-chain data for researchers and tool builders powered by `Messari Subgraph Endpoints <https://subgraphs.messari.io/>`__, 
+This library is a collection of reusable public goods Subgraph queriess to obtain cross-chain data for researchers and tool builders powered by `Messari Subgraph Endpoints <https://subgraphs.messari.io/>`__, 
 
-Overview
-==========
-A collection of reusable public goods subgraph queries.
 
 Tools
 ==========
@@ -66,14 +63,25 @@ Requirements
 
 Installation
 ============
-2. Install Subgrounds:
+
+1. Install virtualenv:
 
    .. code:: bash
 
-      pip install subgrounds
+      python -m venv .venv
+      source .venv/bin/activate
 
-3. Install Polars
+2. Install from github source:
 
-    .. code:: bash
-    
-        pip install polars
+   .. code:: bash
+
+      pip install git+https://github.com/Evan-Kim2028/subgraph-query-portal.git
+
+
+Making Changes to Source Code
+=============================
+1. Enable editable mode. Instructs pip to install the package in a way that allows you to make changes to the package's source code and have those changes take effect immediately
+
+   .. code:: bash
+
+      pip install -e .

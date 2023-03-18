@@ -4,7 +4,7 @@ import polars as pl
 from dataclasses import dataclass
 from datetime import datetime
 from subgrounds import Subgrounds
-from usdc_depeg.benchmark import Benchmark
+from benchmark import Benchmark
 
 @dataclass
 class Dex:
@@ -20,7 +20,7 @@ class Dex:
             # token_out: list[str],
             query_size: int,
             save_data: bool = False,
-            endpoint_col: bool = True
+            add_endpoint_col: bool = True
             ) -> pl.DataFrame:
         """
         get_swap_data() hardcodes logic to preprocess swap data from a dex subgraph using DataStreams
@@ -57,7 +57,7 @@ class Dex:
         df['swaps_amountIn'] = df['swaps_amountIn'].astype(float)
 
 
-        if endpoint_col:
+        if add_endpoint_col:
             # add endpoint column
             name = self.endpoint.split('/')[-1]
             df['endpoint'] = name

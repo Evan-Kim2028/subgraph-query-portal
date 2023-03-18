@@ -1,4 +1,4 @@
-from usdc_depeg.dex import Dex
+from dex import Dex
 from datetime import datetime
 
 
@@ -21,8 +21,7 @@ query_size = 123
 df = my_dex.query_swap_data(
     start_time=start_time, 
     end_time=end_time, 
-    query_size=query_size
+    query_size=query_size,
+    save_data=False,
+    add_endpoint_col=True
     )
-
-
-print('done')
