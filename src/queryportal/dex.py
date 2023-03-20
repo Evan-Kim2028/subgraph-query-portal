@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from subgrounds import Subgrounds
 from queryportal.benchmark import Benchmark
+from queryportal.queryfilter import QueryFilter
 
 @dataclass
 class Dex:
@@ -16,8 +17,8 @@ class Dex:
             self,
             start_time: int, 
             end_time: int, 
-            # token_in: list[str],
-            # token_out: list[str],
+            token_in: None,
+            token_out: None,
             query_size: int,
             save_data: bool = False,
             add_endpoint_col: bool = True
@@ -44,8 +45,7 @@ class Dex:
         dex_schema = sg.load_subgraph(self.endpoint)
         # define field path
         swaps_fp = dex_schema.Query.swaps
-        
-        # define query path from the field path
+
         swaps_qp = swaps_fp(
             first=query_size,
             orderBy='timestamp',
@@ -88,6 +88,4 @@ class Dex:
         TODO - 3/18/23 - Do I add helper functions to convert between datetime and timestamp?
         """
         return int(round(dt.timestamp()))
-    
-    
     
