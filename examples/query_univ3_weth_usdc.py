@@ -5,7 +5,6 @@ from datetime import datetime
 # define subgraph endpoint. This one is the Univ3 Ethereum endpoint maintained by Messari
 endpoint = 'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum'
 
-
 # instantiate dex class. Dex stores dex-related query functions
 my_dex = Dex(endpoint)
 
@@ -16,14 +15,11 @@ end_date = datetime(2023, 3, 13)
 # convert dates from datetime to unix timestamp
 start_time = my_dex.date_to_time(start_date)
 end_time = my_dex.date_to_time(end_date)
-# token_out = ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'] # USDC
-token_in = ['Wrapped Ether', 'USD Coin', 'Tether USD']
-token_out = ['Wrapped Ether', 'USD Coin', 'Tether USD']
-# leave out token_in on purpose to make sure filters work as optional params
+token_in = ['USD Coin', 'Wrapped Ether']
+token_out = ['Wrapped Ether', 'Wrapped Ether']
 
 # specify query size
-query_size = 123
-
+query_size = 2500
 
 df = my_dex.query_swaps(
     start_time=start_time, 
@@ -32,5 +28,6 @@ df = my_dex.query_swaps(
     token_in = token_in,
     token_out = token_out,
     save_data=True,
+    saved_file_name='usdc_weth_lp',
     add_endpoint_col=True
     )

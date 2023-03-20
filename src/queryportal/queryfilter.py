@@ -38,11 +38,10 @@ class QueryFilter():
         
     def check_type(self, variable):
         """
-        Helper function checks the variable type. If the variable type 
+        Helper function checks the variable type. If the variable type is None, return None
         """
         match variable:
             case int():
-                print(f'{variable} is {type(variable)}')
                 return variable
             case list():
                 for element in variable:

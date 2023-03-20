@@ -87,11 +87,32 @@ Examples
 ========================
 Run the following commands from the root directory of the project.
 
-1. Query Univ3 Swap data:
+1. Query all of the most recent Univ3 Swap data
+    
+   .. code:: bash
+
+      python examples/query_univ3_latest.py
+
+2. Query all Univ3 Swap data within a time period:
 
    .. code:: bash
 
-      python examples/query_univ3_swaps.py
+      python examples/query_univ3_all_swaps.py
+
+1. Query Univ3 WETH/USDC pool data within a time period:
+
+   .. code:: bash
+
+      python examples/query_univ3_weth_usdc.py
+
+2. Query USDC supply going into all Univ3 pools within a time period:
+
+   .. code:: bash
+
+      python examples/query_univ3_usdc_in.py
+
+
+`
 
 
 Import Package
