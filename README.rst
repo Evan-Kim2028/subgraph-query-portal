@@ -112,7 +112,6 @@ Run the following commands from the root directory of the project.
       python examples/query_univ3_usdc_in.py
 
 
-`
 
 
 Import Package
