@@ -46,7 +46,7 @@ Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
 
 Subgraphs
 ---------
-Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints. For a list of standardized subgraph endpoints by Messari, see `here https://subgraphs.messari.io`__.
+Subgraphs are custom APIs built on indexed blockchain data that can be queried using GraphQL endpoints. For a list of standardized subgraph endpoints by Messari, see `here <https://subgraphs.messari.io>`__.
 
 Subgrounds
 ----------
