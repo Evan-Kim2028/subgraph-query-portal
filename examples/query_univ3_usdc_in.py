@@ -15,7 +15,7 @@ end_date = datetime(2023, 3, 13)
 # convert dates from datetime to unix timestamp
 start_time = my_dex.date_to_time(start_date)
 end_time = my_dex.date_to_time(end_date)
-token_in = ['USD Coin']
+token_in = ['USDC']
 
 # specify query size
 query_size = 2500

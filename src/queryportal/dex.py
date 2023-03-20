@@ -54,7 +54,7 @@ class Dex:
 
         # call query_tokens() to get addresses of token names.
         if token_in != None:
-            token_in_df = self.query_tokens(names_list=token_in)
+            token_in_df = self.query_tokens(ticker_list=token_in)
             token_in_df = token_in_df.rename(
                 {
                 'tokens_id': 'swaps_tokenIn_id',
@@ -70,7 +70,7 @@ class Dex:
             token_in_df = None
 
         if token_out != None:
-            token_out_df = self.query_tokens(names_list=token_out)
+            token_out_df = self.query_tokens(ticker_list=token_out)
             # change column name
             token_out_df = token_out_df.rename(
                 {'tokens_id': 'swaps_tokenOut_id',
@@ -135,7 +135,8 @@ class Dex:
     @Benchmark.df_describe
     def query_tokens(
             self, 
-            names_list: list[str] = None, 
+            # names_list: list[str] = None, 
+            ticker_list: list[str] = None,
             save_data=None, 
             saved_file_name: str = None,
             add_endpoint_col: bool = True
@@ -143,7 +144,7 @@ class Dex:
         """
         Runs a query against the tokens schema to get token names
         """
-        if names_list != None:
+        if ticker_list != None:
             # load dex subgraph schema information from the the subgraph endpoint
             token_schema = self.sg.load_subgraph(self.endpoint)
 
@@ -155,8 +156,8 @@ class Dex:
                 # orderBy='symbol',
                 # orderDirection='desc',
                 where = {
-                # 'symbol_in' : symbol_list, # TODO  3/20/23 - Create dynamic field search param dictionary
-                'name_in' : names_list,
+                'symbol_in' : ticker_list, # TODO  3/20/23 - Create dynamic field search param dictionary
+                # 'name_in' : names_list,
                 'lastPriceUSD_gt': 0
                 }
             )

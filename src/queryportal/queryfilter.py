@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 @dataclass
 class QueryFilter():
@@ -7,7 +8,6 @@ class QueryFilter():
     make_search_param constructs a customized search filter that is inserted
     into the where clause in the query_df function in the Subgrounds class.
     """
-
 
     def make_search_param(
             self,             
@@ -52,4 +52,10 @@ class QueryFilter():
             case Other:
                 print(f'Type Mismatch: {variable} is {type(variable)}. Return None')
                 return None
-            
+    
+    def date_to_time(self, dt: datetime) -> int:
+        """
+        date_to_time() converts a datetime object to a timestamp
+        TODO - 3/18/23 - Do I add helper functions to convert between datetime and timestamp?
+        """
+        return int(round(dt.timestamp()))
