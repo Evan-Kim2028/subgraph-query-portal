@@ -15,12 +15,13 @@ class Dex:
     @Benchmark.df_describe
     def query_swap_data(
             self,
-            start_time: int, 
-            end_time: int, 
-            token_in: None,
-            token_out: None,
-            query_size: int,
+            start_time: int = None, 
+            end_time: int = None, 
+            token_in: list[str] = None,
+            token_out: list[str] = None,
+            query_size: int = None,
             save_data: bool = False,
+            saved_file_name: str = None,
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
         """
@@ -29,6 +30,7 @@ class Dex:
         end_time: int - unix timestamp of the end time of the query range
         query_size: int - number of swaps to query
         save_data: bool - whether to save the data to a parquet file. Default = False
+        saved_file_name: str - if non-empty, use custom file name. If None, default endpoint name.
         add_endpoint_col: bool - whether to add a column to the dataframe with the endpoint url name. Default = True
         
         query_swap_data() queries a DEX swaps schema from a Subgraph endpiont. It returns a Polars DataFrame of swap data.
@@ -46,16 +48,16 @@ class Dex:
         # define field path
         swaps_fp = dex_schema.Query.swaps
 
+        # instantiate QueryFilter object # TODO - come up with cleaner implementation. Maybe ENUM?
+        query_filter = QueryFilter()
+        # construct query filter dict
+        param_dict = query_filter.make_search_param(start_time, end_time, token_in, token_out)
+        print(f'DEBUGGING: param_dict = {param_dict}')
         swaps_qp = swaps_fp(
             first=query_size,
             orderBy='timestamp',
             orderDirection='desc',
-            where = {
-            'timestamp_gte': start_time,
-            'timestamp_lt': end_time
-            # 'tokenIn_id_in': token_in,
-            # 'tokenOut_id_in': token_out
-            }
+            where = param_dict
         )
 
         # run query
@@ -78,8 +80,11 @@ class Dex:
             # check if data folder exists. If it doesn't, create it
             if not os.path.exists('data'):
                 os.makedirs('data')
-            swaps_df.write_parquet('data/test.parquet')
-
+            if saved_file_name:
+                swaps_df.write_parquet(f'data/{saved_file_name}.parquet')
+            else:
+                swaps_df.write_parquet(f'data/{name}.parquet')
+                
         return swaps_df
 
     def date_to_time(self, dt: datetime) -> int:

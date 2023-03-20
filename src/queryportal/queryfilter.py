@@ -2,6 +2,11 @@ from dataclasses import dataclass
 
 @dataclass
 class QueryFilter():
+    """
+    Functionality Layout:
+    make_search_param constructs a customized search filter that is inserted
+    into the where clause in the query_df function in the Subgrounds class.
+    """
 
 
     def make_search_param(
@@ -10,25 +15,26 @@ class QueryFilter():
             end_time: int = None, 
             token_in: list[str] = None,
             token_out: list[str] = None,
-            query_size: int = None
             ) -> dict:
+        """
+        make_search_param constructs a search parameter query. This is used upstream to get passed into the
+        query_swap function. The filter parameters are specified based off of the search_param dictionary keys.
+        """
         
         # empty query dict that will be filled up and returned.
-        query_dict = {}
+        search_query_dict = {}
 
         # check variable type. For any None type, do not add to query dictionary
         if self.check_type(start_time) is not None:
-            query_dict['timestamp_gte'] = start_time
+            search_query_dict['timestamp_gte'] = start_time
         if self.check_type(end_time) is not None:
-            query_dict['timestamp_lt'] = end_time
+            search_query_dict['timestamp_lt'] = end_time
         if self.check_type(token_in) is not None:
-            query_dict['tokenIn_id_in'] = token_in
+            search_query_dict['tokenIn_in'] = token_in
         if self.check_type(token_out) is not None:
-            query_dict['tokenOut_id_in'] = token_out
-        if self.check_type(query_size) is not None:
-            query_dict['first'] = query_size
+            search_query_dict['tokenOut_in'] = token_out
 
-        return query_dict
+        return search_query_dict
         
     def check_type(self, variable):
         """
@@ -47,4 +53,4 @@ class QueryFilter():
             case Other:
                 print(f'Type Mismatch: {variable} is {type(variable)}. Return None')
                 return None
-                
+            
