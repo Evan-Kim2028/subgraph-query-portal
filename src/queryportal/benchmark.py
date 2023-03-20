@@ -2,9 +2,11 @@ from time import time
 from functools import wraps
 
 class Benchmark:
+    """
+    Helper decorators that give meta-information for query functions.
+    """
     def timeit(func):
-        # This function shows the execution time of 
-        # the function object passed
+        # This function shows the execution time of the function object passed.
         def wrap_func(*args, **kwargs):
             t1 = time()
             result = func(*args, **kwargs)
@@ -16,7 +18,7 @@ class Benchmark:
 
     def df_describe(function):
         """
-        Describes basic properties of a polars DataFrame output
+        Describes basic properties of a polars DataFrame output - the shape, columns, datatypes, and header
         """
         @wraps(function)
         def wrapper(*args, **kwargs):
