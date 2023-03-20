@@ -13,7 +13,7 @@ class Dex:
 
     @Benchmark.timeit
     @Benchmark.df_describe
-    def query_swap_data(
+    def query_swaps(
             self,
             start_time: int = None, 
             end_time: int = None, 

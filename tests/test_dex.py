@@ -23,7 +23,7 @@ token_out = ['0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'] # USDC
 query_size = 123
 
 
-df = my_dex.query_swap_data(
+df = my_dex.query_swaps(
     start_time=start_time, 
     end_time=end_time, 
     query_size=query_size,

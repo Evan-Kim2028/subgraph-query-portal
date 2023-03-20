@@ -23,7 +23,7 @@ token_out = ['0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2'] # WETH
 # specify query size
 query_size = 500
 
-df = my_dex.query_swap_data(
+df = my_dex.query_swaps(
     start_time=start_time, 
     end_time=end_time, 
     query_size=query_size,
