@@ -111,7 +111,10 @@ Run the following commands from the root directory of the project.
 
       python examples/query_univ3_usdc_in.py
 
-
+Cross Chain Query Example
+==========================
+Load the example notebook `query_univ3_cross_chain.ipyn`_ in the `examples`_ directory. This notebook demonstrates
+how a cross chain query workflow would look like if one wanted to query all USDC supply going into Uniswap V3 pools across multiple blockchain subgraphs.
 
 
 Import Package
