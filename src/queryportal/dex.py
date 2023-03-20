@@ -28,17 +28,16 @@ class Dex:
         Parameters:
         start_time: int - unix timestamp of the start time of the query range
         end_time: int - unix timestamp of the end time of the query range
+        token_in: list[str] - list of token_in addresses to query
+        token_out: list[str] - list of token_out addresses to query
         query_size: int - number of swaps to query
         save_data: bool - whether to save the data to a parquet file. Default = False
         saved_file_name: str - if non-empty, use custom file name. If None, default endpoint name.
         add_endpoint_col: bool - whether to add a column to the dataframe with the endpoint url name. Default = True
         
         query_swap_data() queries a DEX swaps schema from a Subgraph endpiont. It returns a Polars DataFrame of swap data.
-        Returns a Polars DataFrame of swap data.
 
-        
-        TODO - to use token_in and token_out, need to construct a field path from the ground up specify which query parameters to use. Currently it's all or none approach and it's too rigid
-
+        TODO - add automatic token_name query so you can query based off of token symbol instead of token address
 
         """
         # load Subgrounds object
