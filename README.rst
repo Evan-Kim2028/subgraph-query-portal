@@ -41,7 +41,7 @@ web3 on-chain data analytics workflows in Python.
 Tools
 ==========
 This project utilizes Subgraph endpoints from `Messari <https://messari.io/report/the-graph-foundation-awards-messari-usd12-5mm-in-first-ever-core-subgraph-developer-grant-to-build-and-standardize-subgraphs>`__ 
-and `Subgrounds <https://docs.playgrounds.network/>`__, an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__. 
+and `Subgrounds <https://github.com/0xPlaygrounds/subgrounds>`__, an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__. 
 Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
 
 Subgraphs
