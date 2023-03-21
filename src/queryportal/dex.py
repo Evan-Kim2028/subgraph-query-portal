@@ -9,6 +9,10 @@ from queryportal.queryfilter import QueryFilter
 
 @dataclass
 class Dex:
+    """
+    DEX class stores standardized Messari DEX query methods for easier access. 
+    The queries assume that Messari schemas and may not function properly if used with non-Messari standardized Dex subgraphs.
+    """
     endpoint: str
     # load Subgrounds object
     sg = Subgrounds()
