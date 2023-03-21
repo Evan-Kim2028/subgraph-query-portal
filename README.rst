@@ -137,3 +137,6 @@ This may result in conflicting versions of the package.
       pip install -e .
 
 
+Contributing
+========================
+Allow Subgraph developers to submit their own subgraph queries for others to use. Coming soon.

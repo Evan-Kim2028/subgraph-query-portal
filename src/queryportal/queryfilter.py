@@ -7,6 +7,8 @@ class QueryFilter():
     Functionality Layout:
     make_search_param constructs a customized search filter that is inserted
     into the where clause in the query_df function in the Subgrounds class.
+
+    TODO - make the where clause more functional so there are no hardcoded values
     """
 
     def make_search_param(
@@ -52,10 +54,3 @@ class QueryFilter():
             case Other:
                 print(f'Type Mismatch: {variable} is {type(variable)}. Return None')
                 return None
-    
-    def date_to_time(self, dt: datetime) -> int:
-        """
-        date_to_time() converts a datetime object to a timestamp
-        TODO - 3/18/23 - Do I add helper functions to convert between datetime and timestamp?
-        """
-        return int(round(dt.timestamp()))
