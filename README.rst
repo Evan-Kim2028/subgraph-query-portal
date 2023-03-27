@@ -34,8 +34,8 @@ Subgraph Query Portal
 =====================
 
 
-This library is a collection of public goods Subgraph queriess to obtain cross-chain data for researchers and tool builders. Seamlessly integrate subgraph data into existing 
-web3 on-chain data analytics workflows in Python.
+This library is a curated collection of public goods Subgraph queriess to obtain cross-chain data for researchers and tool builders. Similar to SQL views, Python Subgraph queries are snapshots of data that can be reused by others.
+Seamlessly integrate subgraph data into existing web3 on-chain data analytics workflows in Python.
 
 
 Tools
@@ -50,8 +50,8 @@ Subgraphs are custom APIs built on indexed blockchain data that can be queried u
 
 Subgrounds
 ----------
-Subgrounds is a Pythonic data access library that represents Subgraph schemas as Python objects, allowing Subgraph GraphQL queries to be written exclusively in Python. 
-This makes it posisble to integrate Subgraphs into a Python data analytics workflows in Python. 
+Subgrounds is a Pythonic data access library that represents Subgraph schemas as Python objects, allowing Subgraph GraphQL queries to be written exclusively in Python. Subgrounds leverages functional programming design patterns to express 
+subgraphs as. This allows users to integrate Subgraphs into functional programming python data pipelines in Python. 
 
 Polars
 ------
