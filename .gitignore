@@ -59,3 +59,5 @@ data/
 tests/*.ipynb
 src/metrics/
 queries_old/
+examples/*.parquet
+examples/cow_uni_chain_pipe_subgrounds.ipynb
