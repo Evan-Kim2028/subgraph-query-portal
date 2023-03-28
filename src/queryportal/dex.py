@@ -3,9 +3,9 @@ import polars as pl
 
 from dataclasses import dataclass
 from datetime import datetime
-from subgrounds import Subgrounds
+from subgrounds import Subgrounds, Subgraph
+from subgrounds.subgraph import SyntheticField
 from queryportal.benchmark import Benchmark
-from queryportal.queryfilter import QueryFilter
 
 @dataclass
 class Dex:
@@ -15,7 +15,13 @@ class Dex:
     """
     endpoint: str
     # load Subgrounds object
+    dex_subgraph: Subgraph = None
     sg = Subgrounds()
+
+    def __post_init__(self):
+        # load dex subgraph schema information from the the subgraph endpoint. This is represented as a Subgraph object.
+        self.dex_subgraph = self.sg.load(self.endpoint)
+
 
 
     @Benchmark.timeit
@@ -48,15 +54,22 @@ class Dex:
 
         """
 
-        # load dex subgraph schema information from the the subgraph endpoint
-        dex_schema = self.sg.load_subgraph(self.endpoint)
-        # define field path
-        swaps_fp = dex_schema.Query.swaps
+        # define subgraph swap entity
+        swaps_entity = self.dex_subgraph.Swap
+        # insert datetime synthetic field
+        swaps_entity.datetime = SyntheticField.datetime_of_timestamp(self.dex_subgraph.Swap.timestamp)
+        # DEBUG - confirms synthetic field wasa dded to the entity
+        # print(list((field.name, TypeRef.graphql(field.type_)) for field in swaps_entity._object.fields))
+        # print('DEBUG')
 
-        # instantiate QueryFilter object # TODO - come up with cleaner implementation. Maybe ENUM?
-        query_filter = QueryFilter()
 
-        # call query_tokens() to get addresses of token names.
+        #######################################################################################
+        # this logic is to execute pre-query on tokens to get the name of the tokena addresses.
+        # instantiate QueryFilter object 
+        # TODO - come up with cleaner implementation. Maybe ENUM?
+        # query_filter = QueryFilter()
+
+        # call query_tokens() to get addresses of token names. This logic is required because there is a single token list but swaps has two token columns (token_in and token_out)
         if token_in != None:
             token_in_df = self.query_tokens(ticker_list=token_in)
             token_in_df = token_in_df.rename(
@@ -88,14 +101,21 @@ class Dex:
         else:
             token_out = None
             token_out_df = None
+        #######################################################################################
+
+
+
+
+        ########################################################
+        # this logic is to construct and execute the swaps query
 
         # construct query filter dict
-        param_dict = query_filter.make_search_param(start_time, end_time, token_in, token_out)
+        param_dict = self.make_search_param(start_time, end_time, token_in, token_out)
 
         # define query search params based off of param_dict
-        swaps_qp = swaps_fp(
+        swaps_qp = self.dex_subgraph.Query.swaps(
             first=query_size,
-            orderBy='timestamp',
+            orderBy=self.dex_subgraph.Query.swaps.timestamp,
             orderDirection='desc',
             where = param_dict
         )
@@ -114,6 +134,8 @@ class Dex:
 
         # convert df to polars DataFrame
         swaps_df = pl.from_pandas(df)
+        ########################################################
+
 
         # join and replace token addresses with token names
         if not token_in == None:
@@ -149,11 +171,8 @@ class Dex:
         Runs a query against the tokens schema to get token names
         """
         if ticker_list != None:
-            # load dex subgraph schema information from the the subgraph endpoint
-            token_schema = self.sg.load_subgraph(self.endpoint)
-
             # define field path
-            tokens_fp = token_schema.Query.tokens
+            tokens_fp = self.dex_subgraph.Query.tokens
 
             tokens_qp = tokens_fp(
                 # first=100000, # hardcode arbitrary large number to trigger query pagination automaticaly if needed.
@@ -197,3 +216,47 @@ class Dex:
         """
         return int(round(dt.timestamp()))
     
+
+    def make_search_param(
+            self,             
+            start_time: int = None, 
+            end_time: int = None, 
+            token_in: list[str] = None,
+            token_out: list[str] = None,
+            ) -> dict:
+        """
+        make_search_param constructs a search parameter query. This is used upstream to get passed into the
+        query_swap function. The filter parameters are specified based off of the search_param dictionary keys.
+        """
+        
+        # empty query dict that will be filled up and returned.
+        search_query_dict = {}
+
+        # check variable type. For any None type, do not add to query dictionary
+        if self.check_type(start_time) is not None:
+            search_query_dict['timestamp_gte'] = start_time
+        if self.check_type(end_time) is not None:
+            search_query_dict['timestamp_lt'] = end_time
+        if self.check_type(token_in) is not None:
+            search_query_dict['tokenIn_in'] = token_in
+        if self.check_type(token_out) is not None:
+            search_query_dict['tokenOut_in'] = token_out
+
+        return search_query_dict
+        
+    def check_type(self, variable):
+        """
+        Helper function checks the variable type. If the variable type is None, return None
+        """
+        match variable:
+            case int():
+                return variable
+            case list():
+                for element in variable:
+                    if not isinstance(element, str):
+                        print(f'Type Mismatch: {element} is {type(element)} and needs to contain all strings. However it contains {element}, which is type {type(element)}, which is not a string. Return None')
+                        return None
+                return variable            
+            case Other:
+                print(f'Type Mismatch: {variable} is {type(variable)}. Return None')
+                return None
