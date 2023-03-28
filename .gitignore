@@ -60,3 +60,4 @@ tests/*.ipynb
 src/metrics/
 queries_old/
 examples/*.parquet
+examples/*.ipynb
