@@ -62,6 +62,11 @@ class Dex:
         # print(list((field.name, TypeRef.graphql(field.type_)) for field in swaps_entity._object.fields))
         # print('DEBUG')
 
+        # convert start_time and end_time to datetime objects
+        if start_time != None:
+            start_time = self.date_to_time(start_time)
+        if end_time != None:
+            end_time = self.date_to_time(end_time)
 
         #######################################################################################
         # this logic is to execute pre-query on tokens to get the name of the tokena addresses.
@@ -208,11 +213,10 @@ class Dex:
         else:
             return None
 
-
-    def date_to_time(self, dt: datetime) -> int:
+    @staticmethod
+    def date_to_time(dt: datetime) -> int:
         """
         date_to_time() converts a datetime object to a timestamp
-        TODO - 3/18/23 - Do I add helper functions to convert between datetime and timestamp?
         """
         return int(round(dt.timestamp()))
     

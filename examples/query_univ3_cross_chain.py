@@ -15,12 +15,9 @@ for endpoint in endpoint_list:
     my_dex = Dex(endpoint)
 
     # define start and end dates for query range. 
-    start_date = datetime(2023, 3, 9)
-    end_date = datetime(2023, 3, 13)
+    start_time = datetime(2023, 3, 9)
+    end_time = datetime(2023, 3, 13)
 
-    # convert dates from datetime to unix timestamp
-    start_time = my_dex.date_to_time(start_date)
-    end_time = my_dex.date_to_time(end_date)
     token_in = ['USD Coin']
 
     # specify query size
