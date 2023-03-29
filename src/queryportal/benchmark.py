@@ -31,3 +31,4 @@ def df_describe(function):
         except:
             print(f'TypeError: {output} is type {type(output)} and not a polars DataFrame')
     return wrapper
+

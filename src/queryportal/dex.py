@@ -4,6 +4,7 @@ import polars as pl
 from dataclasses import dataclass
 from datetime import datetime
 from subgrounds import Subgrounds
+from subgrounds.schema import TypeRef
 from subgrounds.subgraph import Subgraph
 from subgrounds.subgraph import SyntheticField
 from queryportal.benchmark import timeit, df_describe
@@ -65,6 +66,17 @@ class Dex:
             # create endpoint column via synthetic field
             swaps_entity.endpoint = SyntheticField.constant(name)
 
+        # use synthetic field to change swap values to float
+        swaps_entity.amountOut_float = SyntheticField(
+                f=lambda value: float(value),
+                type_=SyntheticField.FLOAT,
+                deps=swaps_entity.amountOut,
+            )
+        swaps_entity.amountIn_float = SyntheticField(
+                f=lambda value: float(value),
+                type_=SyntheticField.FLOAT,
+                deps=swaps_entity.amountIn,
+            )
 
         # define query search params based off of param_dict
         swaps_qp = self.dex_subgraph.Query.swaps(
@@ -77,10 +89,8 @@ class Dex:
         # run query
         df = self.sg.query_df(swaps_qp)
 
-        # convert swaps_amountOut and swaps_amountIn to floats
-        df['swaps_amountOut'] = df['swaps_amountOut'].astype(float)
-        df['swaps_amountIn'] = df['swaps_amountIn'].astype(float)
-
+        # drop amountIn and amountOut cols
+        df = df.drop(columns=['swaps_amountIn', 'swaps_amountOut'])
 
         # convert df to polars DataFrame
         swaps_df = pl.from_pandas(df)
