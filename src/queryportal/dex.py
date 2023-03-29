@@ -3,7 +3,8 @@ import polars as pl
 
 from dataclasses import dataclass
 from datetime import datetime
-from subgrounds import Subgrounds, Subgraph
+from subgrounds import Subgrounds
+from subgrounds.subgraph import Subgraph
 from subgrounds.subgraph import SyntheticField
 from queryportal.benchmark import timeit, df_describe
 
