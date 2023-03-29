@@ -17,14 +17,12 @@ class Dex:
     """
     endpoint: str
     # load Subgrounds object
-    dex_subgraph: Subgraph = None
+    subgraph: Subgraph = None
     sg = Subgrounds()
 
     def __post_init__(self):
         # load dex subgraph schema information from the the subgraph endpoint. This is represented as a Subgraph object.
-        self.dex_subgraph = self.sg.load(self.endpoint)
-
-
+        self.subgraph = self.sg.load(self.endpoint)
 
     @timeit
     @df_describe
@@ -33,29 +31,18 @@ class Dex:
             query_size: int = None,
             filter_dict: dict = {},
             save_data: bool = False,
+            token_names: bool = True,
             saved_file_name: str = None,
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
         """
         Parameters:
-        start_time: int - unix timestamp of the start time of the query range
-        end_time: int - unix timestamp of the end time of the query range
-        token_in: list[str] - list of token_in addresses to query
-        token_out: list[str] - list of token_out addresses to query
-        query_size: int - number of swaps to query
-        save_data: bool - whether to save the data to a parquet file. Default = False
-        saved_file_name: str - if non-empty, use custom file name. If None, default endpoint name.
-        add_endpoint_col: bool - whether to add a column to the dataframe with the endpoint url name. Default = True
-        
-        query_swap_data() queries a DEX swaps schema from a Subgraph endpiont. It returns a Polars DataFrame of swap data.
-
-        TODO - add automatic token_name query so you can query based off of token symbol instead of token address
-
+        query_swaps() queries a DEX swaps schema from a Subgraph GraphQL endpiont. It returns a Polars DataFrame of swap data that is the equivalent to a materialized view with SQL tables.
         """
         # define subgraph swap entity
-        swaps_entity = self.dex_subgraph.Swap
+        swaps_entity = self.subgraph.Swap
         # insert datetime synthetic field
-        swaps_entity.datetime = SyntheticField.datetime_of_timestamp(self.dex_subgraph.Swap.timestamp)
+        swaps_entity.datetime = SyntheticField.datetime_of_timestamp(self.subgraph.Swap.timestamp)
         # DEBUG - confirms synthetic field wasa dded to the entity
         # print(list((field.name, TypeRef.graphql(field.type_)) for field in swaps_entity._object.fields))
         # print('DEBUG')
@@ -74,11 +61,41 @@ class Dex:
                 type_=SyntheticField.FLOAT,
                 deps=swaps_entity.amountIn,
             )
+        if token_names: # if it's true, do a synthetic merge to add token names automatically to the swaps df
+            token_df = self.query_tokens(
+                query_size=2500,
+                save_data=True,
+                add_endpoint_col=True
+                )
+            
+
+            tokens_entity = self.subgraph.Token
+            # create a dictionary of token ids and their symbols
+            token_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
+            tokens_entity.symbol = SyntheticField(
+                f=lambda value: token_dict[value],
+                type_=SyntheticField.STRING,
+                deps=tokens_entity.id,
+            )
+            
+            swaps_entity = self.subgraph.Swap # re-update variable
+            swaps_entity.tokenIn_symbol = SyntheticField(
+                f=lambda value: value,
+                type_=SyntheticField.STRING,
+                deps=swaps_entity.Token,
+            )
+
+            # new synthetic field with token symbol # TODO - STOP HERE 3/29/23
+            # swaps_entity.symbol = synthetic_merge(
+            #     inputs=token_dict, 
+            #     dependency=swaps_entity.tokenIn.Token.id)
+
+
 
         # define query search params based off of param_dict
-        swaps_qp = self.dex_subgraph.Query.swaps(
+        swaps_qp = self.subgraph.Query.swaps(
             first=query_size,
-            orderBy=self.dex_subgraph.Query.swaps.timestamp,
+            orderBy=self.subgraph.Query.swaps.timestamp,
             orderDirection='desc',
             where = filter_dict
         )
@@ -91,7 +108,6 @@ class Dex:
 
         # convert df to polars DataFrame
         swaps_df = pl.from_pandas(df)
-        ########################################################
 
         if save_data:
             # check if data folder exists. If it doesn't, create it
@@ -103,6 +119,7 @@ class Dex:
                 swaps_df.write_parquet(f'data/{endpoint_name(self.endpoint)}.parquet')
                 
         return swaps_df
+
 
     @timeit
     @df_describe
@@ -118,9 +135,9 @@ class Dex:
         Runs a query against the tokens schema to get token names
         """
         # define subgraph swap entity
-        tokens_entity = self.dex_subgraph.Token
+        tokens_entity = self.subgraph.Token
 
-        tokens_fp = self.dex_subgraph.Query.tokens
+        tokens_fp = self.subgraph.Query.tokens
 
         if add_endpoint_col:
             tokens_entity.endpoint = synthetic_endpoint(self.endpoint)

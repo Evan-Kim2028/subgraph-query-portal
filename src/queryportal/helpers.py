@@ -1,6 +1,8 @@
 from time import time
 from functools import wraps
 from subgrounds.subgraph import SyntheticField
+from subgrounds.subgraph.fieldpath import FieldPath
+
 
 
 def timeit(func):
@@ -33,8 +35,28 @@ def df_describe(function):
             print(f'TypeError: {output} is type {type(output)} and not a polars DataFrame')
     return wrapper
 
-def synthetic_endpoint(endpoint):
-        return SyntheticField.constant(endpoint_name(endpoint))
+def synthetic_endpoint(endpoint) -> SyntheticField:
+    return SyntheticField.constant(endpoint_name(endpoint))
 
 def endpoint_name(endpoint):
     return endpoint.split('/')[-1]
+
+
+# def synthetic_merge(inputs: dict, dependency: FieldPath | SyntheticField) -> SyntheticField:
+#     """
+#     prototype function that uses synthetic fields to merge the token df to the swap df
+#     """
+
+#     return SyntheticField(
+#         lambda: 
+#     )
+
+
+    # return SyntheticField.map(        # this doesn't recognize the fieldpath from a different entity I think. I don't know the problem well tbh
+    #     inputs,
+    #     SyntheticField.STRING,
+    #     dependency,
+    #     'UNKNOWN'
+    #     )
+
+
