@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from subgrounds import Subgrounds, Subgraph
 from subgrounds.subgraph import SyntheticField
-from queryportal.benchmark import Benchmark
+from queryportal.benchmark import timeit, df_describe
 
 @dataclass
 class Dex:
@@ -24,8 +24,8 @@ class Dex:
 
 
 
-    @Benchmark.timeit
-    @Benchmark.df_describe
+    @timeit
+    @df_describe
     def query_swaps(
             self,
             start_time: int = None, 
@@ -162,8 +162,8 @@ class Dex:
         return swaps_df
 
 
-    @Benchmark.timeit
-    @Benchmark.df_describe
+    @timeit
+    @df_describe
     def query_tokens(
             self, 
             # names_list: list[str] = None, 
