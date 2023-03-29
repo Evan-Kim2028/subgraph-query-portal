@@ -59,6 +59,12 @@ class Dex:
         # print(list((field.name, TypeRef.graphql(field.type_)) for field in swaps_entity._object.fields))
         # print('DEBUG')
 
+        if add_endpoint_col:
+            # generate endpoint name
+            name = self.endpoint.split('/')[-1]
+            # create endpoint column via synthetic field
+            swaps_entity.endpoint = SyntheticField.constant(name)
+
 
         # define query search params based off of param_dict
         swaps_qp = self.dex_subgraph.Query.swaps(
@@ -75,10 +81,6 @@ class Dex:
         df['swaps_amountOut'] = df['swaps_amountOut'].astype(float)
         df['swaps_amountIn'] = df['swaps_amountIn'].astype(float)
 
-        if add_endpoint_col:
-            # add endpoint column
-            name = self.endpoint.split('/')[-1]
-            df['endpoint'] = name
 
         # convert df to polars DataFrame
         swaps_df = pl.from_pandas(df)
