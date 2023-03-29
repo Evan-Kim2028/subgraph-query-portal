@@ -108,8 +108,8 @@ class Dex:
     @df_describe
     def query_tokens(
             self, 
-            # names_list: list[str] = None, 
-            ticker_list: list[str] = None,
+            query_size: int,
+            filter_dict: dict = {},
             save_data=None, 
             saved_file_name: str = None,
             add_endpoint_col: bool = True
@@ -120,40 +120,30 @@ class Dex:
         # define subgraph swap entity
         tokens_entity = self.dex_subgraph.Token
 
-        if ticker_list != None:
-            # define field path
-            tokens_fp = self.dex_subgraph.Query.tokens
+        tokens_fp = self.dex_subgraph.Query.tokens
 
-            if add_endpoint_col:
-                tokens_entity.endpoint = synthetic_endpoint(self.endpoint)
+        if add_endpoint_col:
+            tokens_entity.endpoint = synthetic_endpoint(self.endpoint)
 
-            tokens_qp = tokens_fp(
-                # first=100000, # hardcode arbitrary large number to trigger query pagination automaticaly if needed.
-                # orderBy='symbol',
-                # orderDirection='desc',
-                where = {
-                'symbol_in' : ticker_list, # TODO  3/20/23 - Create dynamic field search param dictionary
-                # 'name_in' : names_list,
-                'lastPriceUSD_gt': 0
-                }
-            )
+        tokens_qp = tokens_fp(
+            first=query_size,
+            where = filter_dict
+        )
 
-            df = self.sg.query_df(tokens_qp)
+        df = self.sg.query_df(tokens_qp)
 
-            # convert df to polars
-            tokens_df = pl.from_pandas(df)
+        # convert df to polars
+        tokens_df = pl.from_pandas(df)
 
 
+        if save_data:
+            # check if data folder exists. If it doesn't, create it
+            if not os.path.exists('data'):
+                os.makedirs('data')
+            if saved_file_name:
+                tokens_df.write_parquet(f'data/{saved_file_name}.parquet')
+            else:
+                tokens_df.write_parquet(f'data/{endpoint_name(self.endpoint)}.parquet')
 
-            if save_data:
-                # check if data folder exists. If it doesn't, create it
-                if not os.path.exists('data'):
-                    os.makedirs('data')
-                if saved_file_name:
-                    tokens_df.write_parquet(f'data/{saved_file_name}.parquet')
-                else:
-                    tokens_df.write_parquet(f'data/{endpoint_name(self.endpoint)}.parquet')
+        return tokens_df
 
-            return tokens_df
-        else:
-            return None
