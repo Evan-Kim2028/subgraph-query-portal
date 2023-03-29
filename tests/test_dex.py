@@ -12,20 +12,22 @@ my_dex = Dex(endpoint)
 start_time = datetime(2023, 3, 9)
 end_time = datetime(2023, 3, 13)
 
+# convert start_time and end_time to unix timestamps
+start_timestamp = int(start_time.timestamp())
+end_timestamp = int(end_time.timestamp())
 
-token_in = ['USDC', 'WETH']
-token_out = ['USDC', 'WETH']
+# define a filter dictionary to customize the query search
+filter_dict = {
+    'timestamp_gte': start_timestamp,
+    'timestamp_lte': end_timestamp
+}
 
 # specify query size
 query_size = 2500
 
 df = my_dex.query_swaps(
-    start_time=start_time, 
-    end_time=end_time, 
     query_size=query_size,
-    token_in = token_in,
-    token_out = token_out,
+    # filter_dict=filter_dict,
     save_data=True,
-    saved_file_name='usdc_weth_lp',
     add_endpoint_col=True
     )
