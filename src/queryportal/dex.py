@@ -42,7 +42,7 @@ class Dex:
         # define subgraph swap entity
         swaps_entity = self.subgraph.Swap
         # insert datetime synthetic field
-        swaps_entity.datetime = SyntheticField.datetime_of_timestamp(self.subgraph.Swap.timestamp)
+        swaps_entity.datetime = SyntheticField.datetime_of_timestamp(swaps_entity.timestamp)
         # DEBUG - confirms synthetic field wasa dded to the entity
         # print(list((field.name, TypeRef.graphql(field.type_)) for field in swaps_entity._object.fields))
         # print('DEBUG')
@@ -62,34 +62,23 @@ class Dex:
                 deps=swaps_entity.amountIn,
             )
         if token_names: # if it's true, do a synthetic merge to add token names automatically to the swaps df
+            # run token query
             token_df = self.query_tokens(
                 query_size=2500,
                 save_data=True,
                 add_endpoint_col=True
                 )
-            
 
-            tokens_entity = self.subgraph.Token
             # create a dictionary of token ids and their symbols
             token_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
-            tokens_entity.symbol = SyntheticField(
+
+            # add symbol synthetic field to the Swap entity
+            swaps_entity.symbol = SyntheticField(
                 f=lambda value: token_dict[value],
                 type_=SyntheticField.STRING,
-                deps=tokens_entity.id,
+                deps=swaps_entity.token_id,
             )
-            
-            swaps_entity = self.subgraph.Swap # re-update variable
-            swaps_entity.tokenIn_symbol = SyntheticField(
-                f=lambda value: value,
-                type_=SyntheticField.STRING,
-                deps=swaps_entity.Token,
-            )
-
-            # new synthetic field with token symbol # TODO - STOP HERE 3/29/23
-            # swaps_entity.symbol = synthetic_merge(
-            #     inputs=token_dict, 
-            #     dependency=swaps_entity.tokenIn.Token.id)
-
+        
 
 
         # define query search params based off of param_dict

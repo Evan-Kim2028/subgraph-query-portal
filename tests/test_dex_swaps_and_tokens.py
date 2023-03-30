@@ -8,13 +8,9 @@ endpoint = 'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum'
 # instantiate dex class. Dex stores dex-related query functions
 my_dex = Dex(endpoint)
 
-# define start and end dates for query range. 
-start_time = datetime(2023, 3, 9)
-end_time = datetime(2023, 3, 13)
-
 # convert start_time and end_time to unix timestamps
-start_timestamp = int(start_time.timestamp())
-end_timestamp = int(end_time.timestamp())
+start_timestamp = int(datetime(2023, 3, 9).timestamp())
+end_timestamp = int(datetime(2023, 3, 13).timestamp())
 
 # define a filter dictionary to customize the query search
 filter_dict = {
