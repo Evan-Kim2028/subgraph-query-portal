@@ -73,10 +73,18 @@ class Dex:
             token_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
 
 
+        # tokenIn symbol synthetic field
         swaps_entity.tokenIn_symbol = SyntheticField.map(
                 token_dict,
                 SyntheticField.STRING,
-                swaps_entity.tokenIn,
+                swaps_entity.tokenIn.id,
+                'UNKNOWN'
+            )
+        # tokenOut symbol synthetic field
+        swaps_entity.tokenIn_symbol = SyntheticField.map(
+                token_dict,
+                SyntheticField.STRING,
+                swaps_entity.tokenOut.id,
                 'UNKNOWN'
             )
 
