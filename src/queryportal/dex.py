@@ -61,6 +61,7 @@ class Dex:
                 type_=SyntheticField.FLOAT,
                 deps=swaps_entity.amountIn,
             )
+        
         if token_names: # if it's true, do a synthetic merge to add token names automatically to the swaps df
             # run token query
             token_df = self.query_tokens(
@@ -70,20 +71,37 @@ class Dex:
                 )
 
             # create a dictionary of token ids and their symbols
-            token_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
+            token_symbol_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
+            token_decimal_dict = dict(zip(token_df['tokens_id'], token_df['tokens_decimals']))
 
 
         # tokenIn symbol synthetic field
         swaps_entity.tokenIn_symbol = SyntheticField.map(
-                token_dict,
+                token_symbol_dict,
                 SyntheticField.STRING,
                 swaps_entity.tokenIn.id,
                 'UNKNOWN'
             )
         # tokenOut symbol synthetic field
-        swaps_entity.tokenIn_symbol = SyntheticField.map(
-                token_dict,
+        swaps_entity.tokenOut_symbol = SyntheticField.map(
+                token_symbol_dict,
                 SyntheticField.STRING,
+                swaps_entity.tokenOut.id,
+                'UNKNOWN'
+            )
+        
+        # add token decimals
+        swaps_entity.tokenIn_decimals = SyntheticField.map(
+                token_decimal_dict,
+                SyntheticField.INT,
+                swaps_entity.tokenIn.id,
+                'UNKNOWN'
+            )
+        
+        # add token decimals
+        swaps_entity.tokenOut_decimals = SyntheticField.map(
+                token_decimal_dict,
+                SyntheticField.INT,
                 swaps_entity.tokenOut.id,
                 'UNKNOWN'
             )
