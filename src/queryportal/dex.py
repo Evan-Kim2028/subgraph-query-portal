@@ -64,7 +64,7 @@ class Dex:
         if token_names: # if it's true, do a synthetic merge to add token names automatically to the swaps df
             # run token query
             token_df = self.query_tokens(
-                query_size=2500,
+                query_size=10000,
                 save_data=True,
                 add_endpoint_col=True
                 )
@@ -72,14 +72,13 @@ class Dex:
             # create a dictionary of token ids and their symbols
             token_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
 
-            # add symbol synthetic field to the Swap entity
-            swaps_entity.symbol = SyntheticField(
-                f=lambda value: token_dict[value],
-                type_=SyntheticField.STRING,
-                deps=swaps_entity.tokenIn_id,
-            )
-        
 
+        swaps_entity.tokenIn_symbol = SyntheticField.map(
+                token_dict,
+                SyntheticField.STRING,
+                swaps_entity.tokenIn,
+                'UNKNOWN'
+            )
 
         # define query search params based off of param_dict
         swaps_qp = self.subgraph.Query.swaps(
@@ -152,4 +151,6 @@ class Dex:
                 tokens_df.write_parquet(f'data/{endpoint_name(self.endpoint)}.parquet')
 
         return tokens_df
+
+
 
