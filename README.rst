@@ -86,17 +86,29 @@ Examples
 ========================
 Run the following commands from the root directory of the project.
 
-1. Query all of the most recent Univ3 Swap data
+1. Query all CoW Trades data
     
    .. code:: bash
 
-      python examples/query_univ3_latest.py
+      python tests/test_cow.py
 
-2. Query all Univ3 Swap data within a time period:
+2. Query all Univ3 Swap data:
 
    .. code:: bash
 
-      python examples/query_univ3_all_swaps.py
+      python examples/test_dex_swaps_and_tokens.py
+
+2. Query all dex tokens:
+
+   .. code:: bash
+
+      python examples/test_dex_tokens.py
+
+2. Query all Univ3 Swap data:
+
+   .. code:: bash
+
+      python examples/test_dex_swaps_and_tokens.py
 
 
 Cross Chain Query Example
