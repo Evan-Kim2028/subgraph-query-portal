@@ -98,17 +98,6 @@ Run the following commands from the root directory of the project.
 
       python examples/query_univ3_all_swaps.py
 
-1. Query Univ3 WETH/USDC pool data within a time period:
-
-   .. code:: bash
-
-      python examples/query_univ3_weth_usdc.py
-
-2. Query USDC supply going into all Univ3 pools within a time period:
-
-   .. code:: bash
-
-      python examples/query_univ3_usdc_in.py
 
 Cross Chain Query Example
 ==========================
