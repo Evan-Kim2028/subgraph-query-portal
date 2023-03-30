@@ -76,7 +76,7 @@ class Dex:
             swaps_entity.symbol = SyntheticField(
                 f=lambda value: token_dict[value],
                 type_=SyntheticField.STRING,
-                deps=swaps_entity.token_id,
+                deps=swaps_entity.tokenIn_id,
             )
         
 
