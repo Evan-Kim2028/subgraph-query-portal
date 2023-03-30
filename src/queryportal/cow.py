@@ -32,7 +32,7 @@ class Cow:
             query_size: int = None,
             filter_dict: dict = {},
             save_data: bool = False,
-            token_names: bool = True,
+            token_names: bool = True,       # currently unused
             saved_file_name: str = None,
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:

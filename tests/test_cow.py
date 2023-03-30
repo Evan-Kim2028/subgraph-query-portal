@@ -19,8 +19,8 @@ query_size = 2500
 
 df = my_cow.query_trades(
     query_size=query_size,
-    filter_dict=filter_dict,
-    token_names=True,
+    filter_dict=filter_dict,    
+    token_names=True,           # currently unused
     save_data=True,
     add_endpoint_col=True
     )
