@@ -1,5 +1,5 @@
 from queryportal.cow import Cow
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 # Cow Subgraph endpoint
@@ -10,8 +10,8 @@ my_cow = Cow(endpoint)
 
 # define a filter dictionary to customize the query search
 filter_dict = {
-    'timestamp_gte': int(datetime(2023, 3, 9).timestamp()),
-    'timestamp_lte': int(datetime(2023, 3, 13).timestamp())
+    'timestamp_gte': int((datetime.today() - timedelta(days=1)).timestamp()),
+    'timestamp_lte': int(datetime.today().timestamp())
 }
 
 # specify query size
@@ -24,3 +24,11 @@ df = my_cow.query_trades(
     save_data=True,
     add_endpoint_col=True
     )
+
+
+# group dataframe by trades_settlement_id
+# assuming 'df' is the DataFrame you want to group
+grouped_df = df.groupby('trades_settlement_id').count()
+
+# sorted by settlement_id count size
+grouped_df.sort_values(by='trades_settlement_id', ascending=False)
