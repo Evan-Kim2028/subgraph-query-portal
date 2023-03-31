@@ -41,22 +41,21 @@ def synthetic_endpoint(endpoint) -> SyntheticField:
 def endpoint_name(endpoint):
     return endpoint.split('/')[-1]
 
+def synthetic_convert(type, deps) -> SyntheticField:
+    """
+    Creates a new synthetic field path with a different type
+    """
+    match type:
+        case SyntheticField.STRING:
+            return SyntheticField(lambda value: str(value), SyntheticField.STRING, deps)
+        case SyntheticField.INT:
+            return SyntheticField(lambda value: int(value), SyntheticField.INT, deps)
+        case SyntheticField.FLOAT:
+            return SyntheticField(lambda value: float(value), SyntheticField.FLOAT, deps)
+        case SyntheticField.BOOL:
+            return SyntheticField(lambda value: bool(value), SyntheticField.BOOL, deps)
 
-# def synthetic_merge(inputs: dict, dependency: FieldPath | SyntheticField) -> SyntheticField:
-#     """
-#     prototype function that uses synthetic fields to merge the token df to the swap df
-#     """
-
-#     return SyntheticField(
-#         lambda: 
-#     )
 
 
-    # return SyntheticField.map(        # this doesn't recognize the fieldpath from a different entity I think. I don't know the problem well tbh
-    #     inputs,
-    #     SyntheticField.STRING,
-    #     dependency,
-    #     'UNKNOWN'
-    #     )
 
 
