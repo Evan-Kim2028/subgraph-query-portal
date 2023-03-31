@@ -58,7 +58,7 @@ class Dex:
         # create a dictionary of token ids and their symbols
         token_symbol_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
         token_decimal_dict = dict(zip(token_df['tokens_id'], token_df['tokens_decimals']))
-        
+
         # left inner joins between swaps and tokens
         swaps_entity.tokenIn_symbol = SyntheticField.map(token_symbol_dict, SyntheticField.STRING, swaps_entity.tokenIn.id, "uknown")
         swaps_entity.tokenOut_symbol = SyntheticField.map(token_symbol_dict, SyntheticField.STRING, swaps_entity.tokenOut.id, "uknown")
@@ -146,9 +146,9 @@ class Dex:
     @df_describe
     def query_tokens(
             self, 
-            query_size: int,
+            query_size: int = 10000,
             filter_dict: dict = {},
-            save_data=None, 
+            save_data: bool = False, 
             saved_file_name: str = None,
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
