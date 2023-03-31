@@ -53,7 +53,6 @@ class Dex:
         # run token query
         token_df = self.query_tokens(
             query_size=10000,
-            save_data=True,
             add_endpoint_col=True
             )
 
