@@ -58,14 +58,10 @@ def synthetic_convert(type, deps) -> SyntheticField:
             return SyntheticField(lambda value: bool(value), SyntheticField.BOOL, deps)
 
 def save_file(df: pl.DataFrame, endpoint: str, saved_file_name: str = None):
-    # check if data folder exists. If it doesn't, create it
-    if not os.path.exists('../data'):
-        os.makedirs('../data')
-
     if saved_file_name == None:
-        df.write_parquet(f'data/{endpoint_name(endpoint)}.parquet')
+        df.write_parquet(f'{endpoint_name(endpoint)}.parquet')
     else:
-        df.write_parquet(f'data/{saved_file_name}.parquet')   
+        df.write_parquet(f'{saved_file_name}.parquet')   
 
 
 
