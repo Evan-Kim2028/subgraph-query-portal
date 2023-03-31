@@ -31,7 +31,6 @@ class Dex:
             query_size: int = None,
             filter_dict: dict = {},
             save_data: bool = False,
-            token_names: bool = True,
             saved_file_name: str = None,
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
@@ -46,65 +45,69 @@ class Dex:
         # DEBUG - confirms synthetic field wasa dded to the entity
         # print(list((field.name, TypeRef.graphql(field.type_)) for field in swaps_entity._object.fields))
         # print('DEBUG')
-
         if add_endpoint_col:
             swaps_entity.endpoint = synthetic_endpoint(self.endpoint)
 
-        # use synthetic field to change swap values to float
-        swaps_entity.amountOut_float = SyntheticField(
-                f=lambda value: float(value),
-                type_=SyntheticField.FLOAT,
-                deps=swaps_entity.amountOut,
+        # run token query
+        token_df = self.query_tokens(
+            query_size=10000,
+            save_data=True,
+            add_endpoint_col=True
             )
-        swaps_entity.amountIn_float = SyntheticField(
-                f=lambda value: float(value),
-                type_=SyntheticField.FLOAT,
-                deps=swaps_entity.amountIn,
-            )
-        
-        if token_names: # if it's true, do a synthetic merge to add token names automatically to the swaps df
-            # run token query
-            token_df = self.query_tokens(
-                query_size=10000,
-                save_data=True,
-                add_endpoint_col=True
-                )
 
-            # create a dictionary of token ids and their symbols
-            token_symbol_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
-            token_decimal_dict = dict(zip(token_df['tokens_id'], token_df['tokens_decimals']))
-
-
-        # tokenIn symbol synthetic field
-        swaps_entity.tokenIn_symbol = SyntheticField.map(
-                token_symbol_dict,
-                SyntheticField.STRING,
-                swaps_entity.tokenIn.id,
-                'UNKNOWN'
-            )
-        # tokenOut symbol synthetic field
-        swaps_entity.tokenOut_symbol = SyntheticField.map(
-                token_symbol_dict,
-                SyntheticField.STRING,
-                swaps_entity.tokenOut.id,
-                'UNKNOWN'
-            )
+        # create a dictionary of token ids and their symbols
+        token_symbol_dict = dict(zip(token_df['tokens_id'], token_df['tokens_symbol']))
+        token_decimal_dict = dict(zip(token_df['tokens_id'], token_df['tokens_decimals']))
         
-        # add token decimals
-        swaps_entity.tokenIn_decimals = SyntheticField.map(
-                token_decimal_dict,
-                SyntheticField.INT,
-                swaps_entity.tokenIn.id,
-                'UNKNOWN'
-            )
-        
-        # add token decimals
-        swaps_entity.tokenOut_decimals = SyntheticField.map(
-                token_decimal_dict,
-                SyntheticField.INT,
-                swaps_entity.tokenOut.id,
-                'UNKNOWN'
-            )
+        # left inner joins between swaps and tokens
+        swaps_entity.tokenIn_symbol = SyntheticField.map(token_symbol_dict, SyntheticField.STRING, swaps_entity.tokenIn.id, "uknown")
+        swaps_entity.tokenOut_symbol = SyntheticField.map(token_symbol_dict, SyntheticField.STRING, swaps_entity.tokenOut.id, "uknown")
+        swaps_entity.tokenIn_decimals = SyntheticField.map(token_decimal_dict, SyntheticField.INT, swaps_entity.tokenIn.id, 0)
+        swaps_entity.tokenOut_decimals = SyntheticField.map(token_decimal_dict, SyntheticField.INT, swaps_entity.tokenOut.id, 0)
+
+        # check if fieldpath exists. If it does, do synthetic convert.
+
+        try:
+            swaps_entity.amountIn_float = synthetic_convert(type=SyntheticField.FLOAT, deps=swaps_entity.amountIn)
+        except KeyError:
+            pass
+
+        try:
+            swaps_entity.amountOut_float = synthetic_convert(type=SyntheticField.FLOAT, deps=swaps_entity.amountOut)
+        except KeyError:
+            pass
+
+        try:
+            swaps_entity.gasLimit_float = synthetic_convert(type=SyntheticField.FLOAT, deps=swaps_entity.gasLimit)
+        except KeyError:
+            pass
+
+        try:
+            swaps_entity.gasPrice_float = synthetic_convert(type=SyntheticField.FLOAT, deps=swaps_entity.gasPrice)
+        except KeyError:
+            pass
+
+        try:
+            swaps_entity.gasUsed_float = synthetic_convert(type=SyntheticField.FLOAT, deps=swaps_entity.gasUsed)
+        except KeyError:
+            pass
+
+        try:
+            swaps_entity.nonce_float = synthetic_convert(type=SyntheticField.FLOAT, deps=swaps_entity.nonce)
+        except KeyError:
+            pass
+
+        try:
+            swaps_entity.tick_float = synthetic_convert(type=SyntheticField.FLOAT, deps=swaps_entity.tick)
+        except KeyError:
+            pass
+
+        # MIGHT USE THIS CODE LATER
+        # if hasattr(swaps_entity, 'amountIn'):
+        #     print('has attribute!')
+        # else:
+        #     pass
+
 
         # define query search params based off of param_dict
         swaps_qp = self.subgraph.Query.swaps(
@@ -115,24 +118,28 @@ class Dex:
         )
 
         # run query
-        df = self.sg.query_df(swaps_qp)
+        swaps_df = self.sg.query_df(swaps_qp)
 
-        # drop amountIn and amountOut cols
-        df = df.drop(columns=['swaps_amountIn', 'swaps_amountOut'])
+        drop_cols = ['swaps_amountIn', 'swaps_amountOut', 'swaps_gasLimit', 'swaps_gasPrice', 'swaps_tick', 'swaps_nonce', 'swaps_gasUsed']
+        # check if columns exist:
+        for col in drop_cols:
+            if col in swaps_df.columns.to_list():  # if column exists, then drop it
+                swaps_df.drop(col, axis=1, inplace=True)
 
-        # convert df to polars DataFrame
-        swaps_df = pl.from_pandas(df)
+        # print what types each swaps_df is
+        # convert swaps_df to polars DataFrame
+        swaps_df_pl = pl.from_pandas(swaps_df)
 
         if save_data:
             # check if data folder exists. If it doesn't, create it
             if not os.path.exists('data'):
                 os.makedirs('data')
             if saved_file_name:
-                swaps_df.write_parquet(f'data/{saved_file_name}.parquet')
+                swaps_df_pl.write_parquet(f'data/{saved_file_name}.parquet')
             else:
-                swaps_df.write_parquet(f'data/{endpoint_name(self.endpoint)}.parquet')
+                swaps_df_pl.write_parquet(f'data/{endpoint_name(self.endpoint)}.parquet')
                 
-        return swaps_df
+        return swaps_df_pl
 
 
     @timeit
@@ -162,9 +169,16 @@ class Dex:
         )
 
         df = self.sg.query_df(tokens_qp)
+        
+        # drop these columns - 3/31/23 - not sure where they are coming from but they don't appear to populate in all tokens dex schemas
+        non_standard_token_cols = ['tokens__totalSupply', 'tokens__totalValueLockedUSD', 'tokens__largePriceChangeBuffer', 'tokens__largeTVLImpactBuffer']
+        # check if columns exist:
+        for col in non_standard_token_cols:
+            if col in df.columns.to_list():  # if column exists, then drop it
+                df.drop(col, axis=1, inplace=True)
 
         # convert df to polars
-        tokens_df = pl.from_pandas(df)
+        tokens_df = pl.from_pandas(df)      # crashing here!!!
 
 
         if save_data:
