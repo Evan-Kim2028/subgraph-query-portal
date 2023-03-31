@@ -1,3 +1,6 @@
+import polars as pl
+import os 
+
 from time import time
 from functools import wraps
 from subgrounds.subgraph import SyntheticField
@@ -14,7 +17,6 @@ def timeit(func):
         print(f'Function {func.__name__!r} executed in {(t2-t1):.4f}s')
         return result
     return wrap_func
-
 
 def df_describe(function):
     """
@@ -55,6 +57,15 @@ def synthetic_convert(type, deps) -> SyntheticField:
         case SyntheticField.BOOL:
             return SyntheticField(lambda value: bool(value), SyntheticField.BOOL, deps)
 
+def save_file(df: pl.DataFrame, endpoint: str, saved_file_name: str = None):
+    # check if data folder exists. If it doesn't, create it
+    if not os.path.exists('../data'):
+        os.makedirs('../data')
+
+    if saved_file_name == None:
+        df.write_parquet(f'data/{endpoint_name(endpoint)}.parquet')
+    else:
+        df.write_parquet(f'data/{saved_file_name}.parquet')   
 
 
 

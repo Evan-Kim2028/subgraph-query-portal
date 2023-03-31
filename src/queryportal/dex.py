@@ -24,6 +24,8 @@ class Dex:
         # load dex subgraph schema information from the the subgraph endpoint. This is represented as a Subgraph object.
         self.subgraph = self.sg.load(self.endpoint)
 
+
+
     @timeit
     @df_describe
     def query_swaps(
@@ -118,28 +120,23 @@ class Dex:
         )
 
         # run query
-        swaps_df = self.sg.query_df(swaps_qp)
+        df = self.sg.query_df(swaps_qp)
 
         drop_cols = ['swaps_amountIn', 'swaps_amountOut', 'swaps_gasLimit', 'swaps_gasPrice', 'swaps_tick', 'swaps_nonce', 'swaps_gasUsed']
         # check if columns exist:
         for col in drop_cols:
-            if col in swaps_df.columns.to_list():  # if column exists, then drop it
-                swaps_df.drop(col, axis=1, inplace=True)
+            if col in df.columns.to_list():  # if column exists, then drop it
+                df.drop(col, axis=1, inplace=True)
 
         # print what types each swaps_df is
         # convert swaps_df to polars DataFrame
-        swaps_df_pl = pl.from_pandas(swaps_df)
-
-        if save_data:
-            # check if data folder exists. If it doesn't, create it
-            if not os.path.exists('data'):
-                os.makedirs('data')
-            if saved_file_name:
-                swaps_df_pl.write_parquet(f'data/{saved_file_name}.parquet')
-            else:
-                swaps_df_pl.write_parquet(f'data/{endpoint_name(self.endpoint)}.parquet')
+        swaps_df = pl.from_pandas(df)
+        
+        # save df to parquet
+        if save_data is not None:
+            save_file(swaps_df, self.endpoint, saved_file_name)
                 
-        return swaps_df_pl
+        return swaps_df
 
 
     @timeit
@@ -178,17 +175,10 @@ class Dex:
                 df.drop(col, axis=1, inplace=True)
 
         # convert df to polars
-        tokens_df = pl.from_pandas(df)      # crashing here!!!
+        tokens_df = pl.from_pandas(df)
 
-
-        if save_data:
-            # check if data folder exists. If it doesn't, create it
-            if not os.path.exists('data'):
-                os.makedirs('data')
-            if saved_file_name:
-                tokens_df.write_parquet(f'data/{saved_file_name}.parquet')
-            else:
-                tokens_df.write_parquet(f'data/{endpoint_name(self.endpoint)}.parquet')
+        if save_data is not None:
+            save_file(tokens_df, self.endpoint, saved_file_name)
 
         return tokens_df
 
