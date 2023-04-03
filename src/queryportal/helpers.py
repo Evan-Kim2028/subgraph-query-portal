@@ -47,7 +47,6 @@ def to_polars(df: pd.DataFrame):
     OverflowErrors. If an OverflowError is encountered, the column is converted to a float type.
     """
     for column in df.columns:
-        print(column)
         try:
             pa.array(df[column])
         except OverflowError:
