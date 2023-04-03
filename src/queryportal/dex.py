@@ -16,7 +16,6 @@ class Dex:
     The queries assume that Messari schemas and may not function properly if used with non-Messari standardized Dex subgraphs.
     """
     endpoint: str
-    # load Subgrounds object
     subgraph: Subgraph = None
     sg = Subgrounds()
 
@@ -29,7 +28,7 @@ class Dex:
     @df_describe
     def query_swaps(
             self,
-            query_size: int = None,
+            query_size: int = 5,
             filter_dict: dict = {},
             save_data: bool = False,
             saved_file_name: str = None,
@@ -129,7 +128,7 @@ class Dex:
         
         # save df to parquet
         if save_data is not None:
-            save_file(swaps_df, self.endpoint, saved_file_name)
+            save_file(swaps_df, saved_file_name)
                 
         return swaps_df
 
@@ -138,9 +137,8 @@ class Dex:
     @df_describe
     def query_tokens(
             self, 
-            query_size: int = 10000,
+            query_size: int = 5,
             filter_dict: dict = {},
-            save_data: bool = False, 
             saved_file_name: str = None,
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
@@ -172,8 +170,8 @@ class Dex:
         # convert df to polars
         tokens_df = pl.from_pandas(df)
 
-        if save_data is not None:
-            save_file(tokens_df, self.endpoint, saved_file_name)
+        if saved_file_name is not None:
+            save_file(tokens_df, saved_file_name)
 
         return tokens_df
 
@@ -183,7 +181,6 @@ class Dex:
             self, 
             query_size: int = 5,
             filter_dict: dict = {},
-            save_data: bool = False, 
             saved_file_name: str = None,
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
@@ -209,8 +206,8 @@ class Dex:
 
         converted_df = to_polars(df)
 
-        if save_data is not None:
-            save_file(converted_df, self.endpoint, saved_file_name)
+        if saved_file_name is not None:
+            save_file(converted_df, saved_file_name)
 
         return converted_df
 
