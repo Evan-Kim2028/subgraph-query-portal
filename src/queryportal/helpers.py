@@ -1,5 +1,6 @@
+import pandas as pd
 import polars as pl
-import os 
+import pyarrow as pa
 
 from time import time
 from functools import wraps
@@ -9,6 +10,9 @@ from subgrounds.subgraph.fieldpath import FieldPath
 
 
 def timeit(func):
+    """
+    Decorator used to how long a query takes
+    """
     # This function shows the execution time of the function object passed.
     def wrap_func(*args, **kwargs):
         t1 = time()
@@ -20,7 +24,7 @@ def timeit(func):
 
 def df_describe(function):
     """
-    Describes basic properties of a polars DataFrame output - the shape, columns, datatypes, and header
+    Decorator that describes the basic properties of a polars DataFrame output - the shape, columns, datatypes, and header
     """
     @wraps(function)
     def wrapper(*args, **kwargs):
@@ -36,6 +40,29 @@ def df_describe(function):
         except:
             print(f'TypeError: {output} is type {type(output)} and not a polars DataFrame')
     return wrapper
+
+def convert_to_polars_dataframe(df: pd.DataFrame):
+    """
+    Use to convert a pandas dataframe to a polars dataframe. Iterates over every pandas column and checks for
+    OverflowErrors. If an OverflowError is encountered, the column is converted to a float type.
+    """
+    for column in df.columns:
+        print(column)
+        try:
+            pa.array(df[column])
+        except OverflowError:
+            print(f"OverflowError encountered in column {column}. Converting to float type...")
+            df[column] = df[column].astype(float)
+    return pl.from_pandas(df)
+
+def save_file(df: pl.DataFrame, endpoint: str, saved_file_name: str = None):
+    """
+    Saves a polars DataFrame to a parquet file. If no file name is specified, the file name will be the endpoint name.
+    """
+    if saved_file_name == None:
+        df.write_parquet(f'{endpoint_name(endpoint)}.parquet')
+    else:
+        df.write_parquet(f'{saved_file_name}.parquet')   
 
 def synthetic_endpoint(endpoint) -> SyntheticField:
     return SyntheticField.constant(endpoint_name(endpoint))
@@ -57,11 +84,6 @@ def synthetic_convert(type, deps) -> SyntheticField:
         case SyntheticField.BOOL:
             return SyntheticField(lambda value: bool(value), SyntheticField.BOOL, deps)
 
-def save_file(df: pl.DataFrame, endpoint: str, saved_file_name: str = None):
-    if saved_file_name == None:
-        df.write_parquet(f'{endpoint_name(endpoint)}.parquet')
-    else:
-        df.write_parquet(f'{saved_file_name}.parquet')   
 
 
 
