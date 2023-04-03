@@ -55,14 +55,12 @@ def to_polars(df: pd.DataFrame):
             df[column] = df[column].astype(float)
     return pl.from_pandas(df)
 
-def save_file(df: pl.DataFrame, endpoint: str, saved_file_name: str = None):
+def save_file(df: pl.DataFrame, saved_file_name: str = None):
     """
     Saves a polars DataFrame to a parquet file. If no file name is specified, the file name will be the endpoint name.
     """
-    if saved_file_name == None:
-        df.write_parquet(f'{endpoint_name(endpoint)}.parquet')
-    else:
-        df.write_parquet(f'{saved_file_name}.parquet')   
+    if saved_file_name is not None:
+        df.write_parquet(f'{endpoint_name(saved_file_name)}.parquet')
 
 def synthetic_endpoint(endpoint) -> SyntheticField:
     return SyntheticField.constant(endpoint_name(endpoint))
