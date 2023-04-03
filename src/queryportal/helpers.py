@@ -41,7 +41,7 @@ def df_describe(function):
             print(f'TypeError: {output} is type {type(output)} and not a polars DataFrame')
     return wrapper
 
-def convert_to_polars_dataframe(df: pd.DataFrame):
+def to_polars(df: pd.DataFrame):
     """
     Use to convert a pandas dataframe to a polars dataframe. Iterates over every pandas column and checks for
     OverflowErrors. If an OverflowError is encountered, the column is converted to a float type.

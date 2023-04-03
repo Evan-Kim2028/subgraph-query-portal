@@ -177,4 +177,42 @@ class Dex:
 
         return tokens_df
 
+    @timeit
+    @df_describe
+    def query_liquiditypools(
+            self, 
+            query_size: int = 5,
+            filter_dict: dict = {},
+            save_data: bool = False, 
+            saved_file_name: str = None,
+            add_endpoint_col: bool = True
+            ) -> pl.DataFrame:
+        """
+        Runs a query against the liquiditypools entity
+        """
+
+        # define subgraph swap entity
+        liquidityPool_entity = self.subgraph.LiquidityPool
+
+        liquidityPools_fp = self.subgraph.Query.liquidityPools
+
+        if add_endpoint_col:
+            liquidityPool_entity.endpoint = synthetic_endpoint(self.endpoint)
+
+        liquidityPools_qp = liquidityPools_fp(
+            first=query_size,
+            where = filter_dict
+        )
+
+        # obtain pandas dataframe of query results
+        df = self.sg.query_df(liquidityPools_qp)
+
+        converted_df = to_polars(df)
+
+        if save_data is not None:
+            save_file(converted_df, self.endpoint, saved_file_name)
+
+        return converted_df
+
+
 
