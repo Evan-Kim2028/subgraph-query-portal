@@ -62,6 +62,7 @@ def save_file(df: pl.DataFrame, saved_file_name: str = None):
     if saved_file_name is not None:
         df.write_parquet(f'{endpoint_name(saved_file_name)}.parquet')
 
+
 def synthetic_endpoint(endpoint) -> SyntheticField:
     return SyntheticField.constant(endpoint_name(endpoint))
 
