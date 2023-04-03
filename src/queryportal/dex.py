@@ -25,7 +25,6 @@ class Dex:
         self.subgraph = self.sg.load(self.endpoint)
 
 
-
     @timeit
     @df_describe
     def query_swaps(
@@ -44,9 +43,7 @@ class Dex:
         swaps_entity = self.subgraph.Swap
         # insert datetime synthetic field
         swaps_entity.datetime = SyntheticField.datetime_of_timestamp(swaps_entity.timestamp)
-        # DEBUG - confirms synthetic field wasa dded to the entity
-        # print(list((field.name, TypeRef.graphql(field.type_)) for field in swaps_entity._object.fields))
-        # print('DEBUG')
+
         if add_endpoint_col:
             swaps_entity.endpoint = synthetic_endpoint(self.endpoint)
 
@@ -66,8 +63,7 @@ class Dex:
         swaps_entity.tokenIn_decimals = SyntheticField.map(token_decimal_dict, SyntheticField.INT, swaps_entity.tokenIn.id, 0)
         swaps_entity.tokenOut_decimals = SyntheticField.map(token_decimal_dict, SyntheticField.INT, swaps_entity.tokenOut.id, 0)
 
-        # check if fieldpath exists. If it does, do synthetic convert.
-
+        # check if fieldpath exists. If it does, do synthetic convert. TODO - refactor this code
         try:
             swaps_entity.amountIn_float = synthetic_convert(type=SyntheticField.FLOAT, deps=swaps_entity.amountIn)
         except KeyError:
@@ -149,7 +145,7 @@ class Dex:
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
         """
-        Runs a query against the tokens schema to get token names
+        Runs a query against the tokens schema
         """
         # define subgraph swap entity
         tokens_entity = self.subgraph.Token
@@ -180,6 +176,5 @@ class Dex:
             save_file(tokens_df, self.endpoint, saved_file_name)
 
         return tokens_df
-
 
 
