@@ -13,21 +13,16 @@ class QueryInterface(ABC):
     @df_describe  # Decorator that adds a description of the returned dataframe to the console
     def query(
             self, 
-            entity,
-            query_path,
+            query_path: FieldPath | list[FieldPath],
             saved_file_name: str = None,
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
         """
         Abstract query method. Requires the following:
-        - schema entity: An object representing the entity to be queried
         - query path: A string representing the query to be executed
 
         The query method is responsible for obtaining query results from a data source, converting the results to a pandas dataframe, and returning the dataframe.
         """
-
-        if add_endpoint_col:
-            entity.endpoint = synthetic_endpoint(self.endpoint)
 
         # Obtain pandas dataframe of query results
         df = self.sg.query_df(query_path)
@@ -41,3 +36,9 @@ class QueryInterface(ABC):
 
         # Return the converted dataframe
         return converted_df
+    
+    def add_synthetic_fields(self):
+        """
+        Add all synthetic fields for token entities here
+        """
+        pass

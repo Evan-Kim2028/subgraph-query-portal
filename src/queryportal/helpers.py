@@ -3,12 +3,18 @@ import polars as pl
 import pyarrow as pa
 
 from time import time
-from functools import wraps
+from functools import wraps, cache
+from subgrounds import Subgrounds
 from subgrounds.subgraph import SyntheticField
 from subgrounds.subgraph.fieldpath import FieldPath
+from subgrounds.schema import TypeRef
+
+from typing import TYPE_CHECKING, Any, Optional
 
 
-
+################################
+# Query Decorator Functions
+################################
 def timeit(func):
     """
     Decorator used to how long a query takes
@@ -41,6 +47,9 @@ def df_describe(function):
             print(f'TypeError: {output} is type {type(output)} and not a polars DataFrame')
     return wrapper
 
+############################
+# Polars Support Functions
+############################
 def to_polars(df: pd.DataFrame):
     """
     Use to convert a pandas dataframe to a polars dataframe. Iterates over every pandas column and checks for
@@ -52,6 +61,8 @@ def to_polars(df: pd.DataFrame):
         except OverflowError:
             print(f"OverflowError encountered in column {column}. Converting to float type...")
             df[column] = df[column].astype(float)
+        except KeyError:
+            print(f'KeyError encountered in column {column}, passing along...')
     return pl.from_pandas(df)
 
 def save_file(df: pl.DataFrame, saved_file_name: str = None):
@@ -59,15 +70,12 @@ def save_file(df: pl.DataFrame, saved_file_name: str = None):
     Saves a polars DataFrame to a parquet file. If no file name is specified, the file name will be the endpoint name.
     """
     if saved_file_name is not None:
-        df.write_parquet(f'{endpoint_name(saved_file_name)}.parquet')
+        df.write_parquet(f'{saved_file_name}.parquet')
 
 
-def synthetic_endpoint(endpoint) -> SyntheticField:
-    return SyntheticField.constant(endpoint_name(endpoint))
-
-def endpoint_name(endpoint):
-    return endpoint.split('/')[-1]
-
+##############################################
+# Synthetic Field Helper Creation Functions
+##############################################
 def synthetic_convert(type, deps) -> SyntheticField:
     """
     Creates a new synthetic field path with a different type
@@ -81,8 +89,14 @@ def synthetic_convert(type, deps) -> SyntheticField:
             return SyntheticField(lambda value: float(value), SyntheticField.FLOAT, deps)
         case SyntheticField.BOOL:
             return SyntheticField(lambda value: bool(value), SyntheticField.BOOL, deps)
+        
 
+@cache
+def get_subgrounds():
+    """
+    Returns a `Subgrounds` object representing a collection of subgrounds. The `@cache` decorator
+    ensures that the `Subgrounds` object returned by this function is cached and returned on subsequent
+    calls to this function, rather than being recomputed every time. 
 
-
-
-
+    """
+    return Subgrounds()
