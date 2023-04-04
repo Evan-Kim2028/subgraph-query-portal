@@ -62,3 +62,4 @@ queries_old/
 examples/*.parquet
 examples/*.ipynb
 scratch/*
+src/queryportal/dex_old.py
