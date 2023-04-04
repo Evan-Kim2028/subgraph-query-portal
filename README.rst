@@ -98,23 +98,6 @@ Run the following commands from the root directory of the project.
 
       python examples/test_dex_swaps_and_tokens.py
 
-2. Query all dex tokens:
-
-   .. code:: bash
-
-      python examples/test_dex_tokens.py
-
-2. Query all Univ3 Swap data:
-
-   .. code:: bash
-
-      python examples/test_dex_swaps_and_tokens.py
-
-
-Cross Chain Query Example
-==========================
-Load the example notebook :code:`query_univ3_cross_chain.ipynb` in the :code:`examples` directory. This notebook demonstrates
-how a cross chain query workflow would look like if one wanted to query all USDC supply going into Uniswap V3 pools across multiple blockchain subgraphs.
 
 
 Import Package
@@ -138,6 +121,6 @@ This may result in conflicting versions of the package.
       pip install -e .
 
 
-Contributing
+For Developers
 ========================
-Allow Subgraph developers to submit their own subgraph queries for others to use. Coming soon.
+Queryinterface is an abstract class that defines the interface for all subgraph queries via the :literal:`query()` method.
