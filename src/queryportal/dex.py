@@ -81,25 +81,14 @@ class Dex(QueryInterface):
             where = filter_dict
         )
 
-        match query_paths:
-            case None:
-                return self.query(
-                    query_path=swaps_qp,
-                    saved_file_name=saved_file_name,
-                    add_endpoint_col=add_endpoint_col
-                )
-            case _:
-                query_path_cols = [
-                    swaps_qp._select(field) for field in query_paths
-                ]
-                return self.query(
-                    query_path=query_path_cols,
+        matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = swaps_qp)
+        return self.query(
+                    query_path=matched_query_path,
                     saved_file_name=saved_file_name,
                     add_endpoint_col=add_endpoint_col
                 )
             
 
-    
     @timeit
     @df_describe
     def query_tokens(self, query_size=5, query_paths: list[str] = None, filter_dict={}, saved_file_name=None, add_endpoint_col=True) -> pl.DataFrame:
@@ -112,22 +101,13 @@ class Dex(QueryInterface):
             where = filter_dict
         )
 
-        match query_paths:
-            case None:
-                return self.query(
-                    query_path=tokens_qp,
+        matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = tokens_qp)
+        return self.query(
+                    query_path=matched_query_path,
                     saved_file_name=saved_file_name,
                     add_endpoint_col=add_endpoint_col
                 )
-            case _:
-                query_path_cols = [
-                    tokens_qp._select(field) for field in query_paths
-                ]
-                return self.query(
-                    query_path=query_path_cols,
-                    saved_file_name=saved_file_name,
-                    add_endpoint_col=add_endpoint_col
-                )
+
 
     @timeit
     @df_describe
@@ -142,19 +122,9 @@ class Dex(QueryInterface):
             where = filter_dict
         )
 
-        match query_paths:
-            case None:
-                return self.query(
-                    query_path=pools_qp,
-                    saved_file_name=saved_file_name,
-                    add_endpoint_col=add_endpoint_col
-                )
-            case _:
-                query_path_cols = [
-                    pools_qp._select(field) for field in query_paths
-                ]
-                return self.query(
-                    query_path=query_path_cols,
+        matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = pools_qp)
+        return self.query(
+                    query_path=matched_query_path,
                     saved_file_name=saved_file_name,
                     add_endpoint_col=add_endpoint_col
                 )
@@ -206,23 +176,11 @@ class Dex(QueryInterface):
             where = filter_dict
         )
 
-        match query_paths:
-            case None:
-                return self.query(
-                    query_path=swaps_qp,
+        matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = swaps_qp)
+        return self.query(
+                    query_path=matched_query_path,
                     saved_file_name=saved_file_name,
                     add_endpoint_col=add_endpoint_col
                 )
-            case _:
-                query_path_cols = [
-                    swaps_qp._select(field) for field in query_paths
-                ]
-                return self.query(
-                    query_path=query_path_cols,
-                    saved_file_name=saved_file_name,
-                    add_endpoint_col=add_endpoint_col
-                )
-    
-    def compute_synthetic_joins(self):
-        pass
+
         

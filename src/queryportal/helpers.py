@@ -100,3 +100,15 @@ def get_subgrounds():
 
     """
     return Subgrounds()
+
+def match_query_paths(default_query_path: FieldPath, query_paths: list[str] = None) -> FieldPath | list[FieldPath]:
+    """
+    Matches query_paths to query_path_cols
+    """
+    match query_paths:
+        case None:
+            return default_query_path
+        case _:
+            return [
+                default_query_path._select(field) for field in query_paths
+            ]
