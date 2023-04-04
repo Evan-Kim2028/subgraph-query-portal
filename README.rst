@@ -33,9 +33,8 @@
 Subgraph Query Portal
 =====================
 
-
-This library is a curated collection of public goods Subgraph queriess to obtain cross-chain data for researchers and tool builders. Similar to SQL views, Python Subgraph queries are snapshots of data that can be reused by others.
-Seamlessly integrate subgraph data into existing web3 on-chain data analytics workflows in Python.
+:literal:`queryportal` a curated collection of Subgraph query public goods and tools to obtain cross-chain data for both analysts and subgraph developers. 
+Similar to SQL views, :literal:`queryportal` queries are curated snapshots of data that can be composed with other queries.
 
 
 Tools
