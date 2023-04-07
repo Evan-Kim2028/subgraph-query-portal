@@ -59,7 +59,7 @@ Polars is a blazingly fast DataFrames library implemented in Rust using Apache A
 Library Dependencies
 ============
 * Python >= 3.10
-* Subgrounds
+* Subgrounds = 1.2.0
 * Polars
 * Pyarrow
 
