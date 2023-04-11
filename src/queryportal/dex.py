@@ -73,12 +73,13 @@ class Dex(QueryInterface):
         endpoint column to the query results if set to True.
         """
 
+        new_filter_dict = create_filter_dict(filter_dict)
         # define query search params based off of filter_dict
         swaps_qp = self.subgraph.Query.swaps(
             first=query_size,
             orderBy=self.subgraph.Query.swaps.timestamp,
             orderDirection='desc',
-            where = filter_dict
+            where = new_filter_dict
         )
 
         matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = swaps_qp)
