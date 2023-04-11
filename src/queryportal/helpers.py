@@ -123,3 +123,35 @@ def create_query_path(default_query_path: FieldPath, query_paths: list[str]) -> 
             modified_qp = modified_qp._select(variable_parts[i])
         new_query_path_list.append(modified_qp)
     return new_query_path_list
+
+
+def create_filter_dict(filter_dict: dict) -> dict:
+    keyword_list = ['in', 'not', 'gt', 'gte', 'lt', 'lte', 'not_in', 'contains', 'not_contains']
+
+    output_dict = {}
+
+    for key in filter_dict.keys():
+        # check if last _ is followed by keyword. Split into a list
+        key_parts = key.split('_')
+        if key_parts[-1] in keyword_list:   # check if key ends with a keyword
+            # combine key_parts[-1] and key_parts[-2]
+            new_key = '_'.join(key_parts[-2:])
+            # drop the last two elements from key_parts
+            key_parts = key_parts[:-2]
+            # append new_key
+            key_parts.append(new_key)
+
+    # make a new dictionary based off of the key_parts
+    temp_dict = output_dict
+    for i in range(len(key_parts)):
+        if key_parts[i] not in temp_dict:
+            if i == len(key_parts) - 1:
+                temp_dict[key_parts[i]] = {}
+                temp_dict[key_parts[i]] = filter_dict[key]
+            else:
+                new_key = key_parts[i] + '_'
+                temp_dict[new_key] = {}
+                temp_dict = temp_dict[new_key]
+
+    print(output_dict)
+    return output_dict
