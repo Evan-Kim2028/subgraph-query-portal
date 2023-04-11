@@ -109,6 +109,17 @@ def match_query_paths(default_query_path: FieldPath, query_paths: list[str] = No
         case None:
             return default_query_path
         case _:
-            return [
-                default_query_path._select(field) for field in query_paths
-            ]
+            return create_query_path(default_query_path, query_paths)
+        
+def create_query_path(default_query_path: FieldPath, query_paths: list[str]) -> list[FieldPath]:
+    """
+    Generates a list of fieldpaths from a list of strings
+    """
+    new_query_path_list = []
+    for variable in query_paths:
+        variable_parts = variable.split('_')    # split if need to split
+        modified_qp = default_query_path  # start with new qp
+        for i in range(len(variable_parts)):
+            modified_qp = modified_qp._select(variable_parts[i])
+        new_query_path_list.append(modified_qp)
+    return new_query_path_list
