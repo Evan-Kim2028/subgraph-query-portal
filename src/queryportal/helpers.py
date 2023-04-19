@@ -126,37 +126,82 @@ def create_query_path(default_query_path: FieldPath, query_paths: list[str]) -> 
 
 
 def create_filter_dict(filter_dict: dict) -> dict:
-    # if filter_dict is empty, return empty dict. Otherwise, continue
-    match filter_dict:
-        case {}:
-            return {}
-        case _:
-            keyword_list = ['in', 'not', 'gt', 'gte', 'lt', 'lte', 'not_in', 'contains', 'not_contains']
+    """
+    Takes the query filter dictionary input and reformats it with nested dictionaries, if required, to conform to Subgrounds query input.
+    """
+    keyword_list = ['in', 'not', 'gt', 'gte', 'lt', 'lte', 'not_in', 'contains', 'not_contains']
 
-            output_dict = {}
+    output_dict = {}
 
-            for key in filter_dict.keys():
-                # check if last _ is followed by keyword. Split into a list
-                key_parts = key.split('_')
-                if key_parts[-1] in keyword_list:   # check if key ends with a keyword
-                    # combine key_parts[-1] and key_parts[-2]
-                    new_key = '_'.join(key_parts[-2:])
-                    # drop the last two elements from key_parts
-                    key_parts = key_parts[:-2]
-                    # append new_key
-                    key_parts.append(new_key)
+    for key in filter_dict.keys():
+        # check if last _ is followed by keyword. Split into a list
+        key_parts = key.split('_')
+        if key_parts[-1] in keyword_list:   # check if key ends with a keyword
+            # combine key_parts[-1] and key_parts[-2]
+            new_key = '_'.join(key_parts[-2:])
+            # drop the last two elements from key_parts
+            key_parts = key_parts[:-2]
+            # append new_key
+            key_parts.append(new_key)
 
-            # make a new dictionary based off of the key_parts
-            temp_dict = output_dict
-            for i in range(len(key_parts)):
-                if key_parts[i] not in temp_dict:
-                    if i == len(key_parts) - 1:
-                        temp_dict[key_parts[i]] = {}
-                        temp_dict[key_parts[i]] = filter_dict[key]
-                    else:
-                        new_key = key_parts[i] + '_'
-                        temp_dict[new_key] = {}
-                        temp_dict = temp_dict[new_key]
+    # make a new dictionary based off of the key_parts
+    temp_dict = output_dict
+    for i in range(len(key_parts)):
+        if key_parts[i] not in temp_dict:
+            if i == len(key_parts) - 1:
+                temp_dict[key_parts[i]] = {}
+                temp_dict[key_parts[i]] = filter_dict[key]
+            else:
+                new_key = key_parts[i] + '_'
+                temp_dict[new_key] = {}
+                temp_dict = temp_dict[new_key]
 
-            print(output_dict)
-            return output_dict
+    print(output_dict)
+    return output_dict
+        
+def fmt_dict_cols(df: pl.DataFrame) -> pl.DataFrame:
+    """
+    formats dictionary cols, which are 'structs' in a polars df, into separate columns and renames accordingly.
+    """
+    for column in df.columns:
+        if isinstance(df[column][0], dict):  
+            print(column)
+            col_names = df[column][0].keys()
+            # rename struct columns
+            struct_df = df.select(
+                pl.col(column).struct.rename_fields([f'{column}_{c}' for c in col_names])
+            )
+            struct_df = struct_df.unnest(column)
+            # add struct_df columns to df and
+            df = df.with_columns(struct_df)
+            # drop the df column
+            df = df.drop(column)
+    
+    return df
+
+def fmt_arr_cols(df: pl.DataFrame) -> pl.DataFrame:
+    """
+    formats lists, which are arrays in a polars df, into separate columns and renames accordingly.
+    Since there isn't a direct way to convert array -> new columns, we convert the array to a struct and then
+    unnest the struct into new columns.
+    """
+    # use this logic if column is a list (rows show up as pl.Series)
+    for column in df.columns:
+        if isinstance(df[column][0], pl.Series):
+            print(column)
+            # convert struct to array
+            struct_df = df.select([pl.col(column).arr.to_struct()])
+            # rename struct fields
+            struct_df = struct_df.select(
+                pl.col(column).struct.rename_fields([f"{column}_{i}" for i in range(len(struct_df.shape))])
+            )
+            # unnest struct fields into their own columns
+            struct_df = struct_df.unnest(column)
+            # add struct_df columns to df and
+            df = df.with_columns(struct_df)
+            # drop the df column
+            df = df.drop(column)
+
+    return df
+
+
