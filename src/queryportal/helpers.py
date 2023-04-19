@@ -129,35 +129,43 @@ def create_filter_dict(filter_dict: dict) -> dict:
     """
     Takes the query filter dictionary input and reformats it with nested dictionaries, if required, to conform to Subgrounds query input.
     """
-    keyword_list = ['in', 'not', 'gt', 'gte', 'lt', 'lte', 'not_in', 'contains', 'not_contains']
 
-    output_dict = {}
+    if len(filter_dict) != 0:   # check if filter_dict is empty. If it is not, continue.
+        keyword_list = ['in', 'not', 'gt', 'gte', 'lt', 'lte', 'not_in', 'contains', 'not_contains']
 
-    for key in filter_dict.keys():
-        # check if last _ is followed by keyword. Split into a list
-        key_parts = key.split('_')
-        if key_parts[-1] in keyword_list:   # check if key ends with a keyword
-            # combine key_parts[-1] and key_parts[-2]
-            new_key = '_'.join(key_parts[-2:])
-            # drop the last two elements from key_parts
-            key_parts = key_parts[:-2]
-            # append new_key
-            key_parts.append(new_key)
+        output_dict = {}
 
-    # make a new dictionary based off of the key_parts
-    temp_dict = output_dict
-    for i in range(len(key_parts)):
-        if key_parts[i] not in temp_dict:
-            if i == len(key_parts) - 1:
-                temp_dict[key_parts[i]] = {}
-                temp_dict[key_parts[i]] = filter_dict[key]
-            else:
-                new_key = key_parts[i] + '_'
-                temp_dict[new_key] = {}
-                temp_dict = temp_dict[new_key]
+        for key in filter_dict.keys():
+            # check if last _ is followed by keyword. Split into a list
+            key_parts = key.split('_')
+            if key_parts[-1] in keyword_list:   # check if key ends with a keyword
+                # combine key_parts[-1] and key_parts[-2]
+                new_key = '_'.join(key_parts[-2:])
+                # drop the last two elements from key_parts
+                key_parts = key_parts[:-2]
+                # append new_key
+                key_parts.append(new_key)
 
-    print(output_dict)
-    return output_dict
+        # make a new dictionary based off of the key_parts
+        temp_dict = output_dict
+        for i in range(len(key_parts)):
+            if key_parts[i] not in temp_dict:
+                if i == len(key_parts) - 1:
+                    temp_dict[key_parts[i]] = {}
+                    temp_dict[key_parts[i]] = filter_dict[key]
+                else:
+                    new_key = key_parts[i] + '_'
+                    temp_dict[new_key] = {}
+                    temp_dict = temp_dict[new_key]
+
+        print(output_dict)
+        return output_dict
+
+    else:               # if filter_dict is empty, return an empty dictionary. Note we need to return an empty dictionary instead of a None value because Subgrounds requires a dictionary as a required input
+        return {}
+
+
+
         
 def fmt_dict_cols(df: pl.DataFrame) -> pl.DataFrame:
     """
