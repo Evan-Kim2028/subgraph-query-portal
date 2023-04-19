@@ -123,3 +123,8 @@ This may result in conflicting versions of the package.
 For Developers
 ========================
 Queryinterface is an abstract class that defines the interface for all subgraph queries via the :literal:`query()` method.
+
+Some reasons why a developer would want to contribute their subgraph queries to this project:
+- Provides a common interface for querying subgraphs
+- Provides polars dataframe output by default
+- Use existing subgraph queries as building blocks for other queries
