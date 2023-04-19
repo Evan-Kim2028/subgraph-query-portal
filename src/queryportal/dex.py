@@ -37,19 +37,29 @@ class Dex(QueryInterface):
             add_endpoint_col: bool = True
             ) -> pl.DataFrame:
         """
-        Concrete implementation of the abstract query method. Requires query_path as an input.
+        new query method that uses query_json() instead of query_df(). Placeholder comment.
         """
+        # Obtain json dict of query results
+        df = self.sg.query_json(query_path)
 
-        # obtain pandas dataframe of query results
-        df = self.sg.query_df(query_path)
+        # get nested json key. Subgrounds creates a hash blob for internal purposes so we need the keys that come after the hash blob.
+        first_key = next(iter(df[0].keys()))
 
-        converted_df = to_polars(df)
+        pl_df = pl.from_dicts(df[0][first_key])
 
+        # convert structs to columns
+        pl_df = fmt_dict_cols(pl_df)
+        # convert lists to columns
+        final_df = fmt_arr_cols(pl_df)
+
+        # If a file name is provided, save the dataframe as a CSV file
         if saved_file_name is not None:
-            save_file(converted_df, saved_file_name)
+            save_file(final_df, saved_file_name)
 
-        return converted_df
+        # Return the converted dataframe
+        return final_df
     
+
     def add_synthetic_fields(self):
         """
         Add all synthetic fields for the subgraph endpoint here, to be instantiated at initialization.
@@ -73,6 +83,7 @@ class Dex(QueryInterface):
         endpoint column to the query results if set to True.
         """
 
+        # create modified filter dict that conforms to required Subgrounds query format
         new_filter_dict = create_filter_dict(filter_dict)
         # define query search params based off of filter_dict
         swaps_qp = self.subgraph.Query.swaps(
