@@ -49,6 +49,8 @@ class Dex(QueryInterface):
         if saved_file_name is not None:
             save_file(final_df, saved_file_name)
 
+        # drop json "id". Seems to return by default even if it's not queried. Seems to be part of json blob structure
+        final_df = final_df.drop('id')
         # Return the converted dataframe
         return final_df
     
