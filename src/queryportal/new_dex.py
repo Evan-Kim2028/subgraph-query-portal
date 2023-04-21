@@ -23,16 +23,6 @@ class Dex(QueryInterface):
     name: str = 'default_name'
     subject: Subject = None
 
-    # NOTE: By default, this function returns the `Subgrounds` object with default settings. If you want to 
-    # customize the subgrounds collection, you can pass a `Subgrounds` object with your desired settings
-    # to the function as the `default_fact` parameter. This allows you to use a header for the subgrounds
-    # collection.
-
-
-    # def __post_init__(self):
-    #     # add synthetic fields to the subgraph schema at initialization
-    #     self.add_synthetic_fields()
-
     def query(
             self, 
             query_path: FieldPath | list[FieldPath],
@@ -83,7 +73,7 @@ class Dex(QueryInterface):
 
         if subgraph_name == None:
             try:
-                assert len(self.subject.subgraphs) == 1
+                assert len(self.subject.subgraphs) == 1 # check that there is only 1 subgraph endpoint loaded
                 single_key = list(self.subject.subgraphs.keys())
                 subject_key = self.subject.subgraphs[single_key[0]]
             except AssertionError:
