@@ -33,14 +33,10 @@ def df_describe(function):
         output = function(*args, **kwargs) # should be a pl.DataFrame
         # try except: if it's a dataframe, print the shape. If the function crashes, print the error message.
         try:
-            print(f'Shape: {output.shape}')
-            print(f'Column Names: {output.columns}')
-            print(f'Data Types: {output.dtypes}')
-            print(f'Data: \n{output.head(5)}')
-
+            print(f'Schema: {output.schema}')
             return output
         except:
-            print(f'TypeError: {output} is type {type(output)} and not a polars DataFrame')
+            print(f'TypeError: {output} is type {type(output)}. Must be polars DataFrame')
     return wrapper
 
 ############################
@@ -48,7 +44,7 @@ def df_describe(function):
 ############################
 def to_polars(df: pd.DataFrame):
     """
-    NOTE - DEPRECATED!
+    NOTE - Currently not being used!
 
     Use to convert a pandas dataframe to a polars dataframe. Iterates over every pandas column and checks for
     OverflowErrors. If an OverflowError is encountered, the column is converted to a float type.
