@@ -15,10 +15,35 @@ dex = Dex(subject=subject)
 
 print(f'Loaded dex_endpoints: {list(dex.subject.subgraphs.keys())}')
 
+filter_dict = {
+    'tokenIn_symbol': 'WETH'
+}
+
+query_paths = [
+    # 'timestamp', 
+    # 'hash',
+    'pool_name', 
+    # 'pool_inputTokens_name', # this returns an array of values which doubles amount of rows due to flattening logic in Subgrounds
+    'tokenIn_symbol', 
+    'tokenOut_symbol', 
+    # 'amountOutUSD', 
+    # 'amountInUSD',
+    # 'amountOut',
+    # 'amountIn',
+    ]
+
 
 # run a query like normal with 'uniswap-v3-ethereum' key
-univ3_eth = dex.query_swaps(subgraph_name='uniswap-v3-ethereum')
-univ3_arb = dex.query_swaps(subgraph_name='uniswap-v3-arbitrum')
+univ3_eth = dex.query_swaps(
+    subgraph_name='uniswap-v3-ethereum', 
+    query_paths=query_paths,
+    filter_dict = filter_dict
+    )
+univ3_arb = dex.query_swaps(
+    subgraph_name='uniswap-v3-arbitrum',
+    query_paths=query_paths,
+    filter_dict = filter_dict
+    )
 
 
 
