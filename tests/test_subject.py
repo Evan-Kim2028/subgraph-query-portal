@@ -1,6 +1,8 @@
 from subutil.subject import Subject
 from queryportal.new_dex import Dex
 
+import polars as pl
+pl.Config.set_fmt_str_lengths(200)
 
 dex_endpoints = [
     'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum',
@@ -14,12 +16,6 @@ subject = Subject(dex_endpoints)
 
 # instantiate Dex class with subgraph key
 dex = Dex(subject=subject)
-
-print(f'Loaded dex_endpoints: {list(dex.subject.subgraphs.keys())}')
-
-filter_dict = {
-    'tokenIn_symbol': 'WETH'
-}
 
 query_paths = [
     'hash',
@@ -37,7 +33,7 @@ for subgraph_name in list(dex.subject.subgraphs.keys()):
     df = dex.query_swaps(
     subgraph_name=subgraph_name, 
     query_paths=query_paths,
-    filter_dict = filter_dict
+    filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
     )
 
     print(df.head(5))
