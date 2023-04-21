@@ -33,6 +33,7 @@ def df_describe(function):
         output = function(*args, **kwargs) # should be a pl.DataFrame
         # try except: if it's a dataframe, print the shape. If the function crashes, print the error message.
         try:
+            print(f'Shape: {output.shape}')
             print(f'Schema: {output.schema}')
             return output
         except:
