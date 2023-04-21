@@ -11,11 +11,8 @@ dex_endpoints = [
     'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-optimism',
 ]
 
-# loading the Subject with dex_endpoints
-subject = Subject(dex_endpoints)
-
 # instantiate Dex class with subgraph key
-dex = Dex(subject=subject)
+dex = Dex(endpoints=dex_endpoints)
 
 query_paths = [
     'hash',
@@ -41,9 +38,39 @@ for subgraph_name in list(dex.subject.subgraphs.keys()):
 
 
 
+# # CURRENT
+# df = dex.query_swaps(
+#     subgraph_name=subgraph_name, 
+#     query_paths=query_paths,
+#     filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
+#     )
+
+# df = dex.query_tokens(
+#     subgraph_name=subgraph_name, 
+#     query_paths=query_paths,
+#     filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
+#     )
+
+# # AFTER
+# df = dex.query(
+#     entity='swaps',
+#     subgraph_name=subgraph_name, 
+#     query_paths=query_paths,
+#     filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
+#     )
+# # TYPE OUTPUT - 
+
+# df = dex.query(
+#     entity='tokens',
+#     subgraph_name=subgraph_name, 
+#     query_paths=query_paths,
+#     filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
+#     )
 
 
 
+# NOTES
+# pre-query schema info, polars lazy eval I think works
 
 
 

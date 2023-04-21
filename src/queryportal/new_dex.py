@@ -13,8 +13,11 @@ class Dex(QueryInterface):
     DEX class stores standardized Messari DEX query methods for easier access. 
     The queries assume that Messari schemas and may not function properly if used with non-Messari standardized Dex subgraphs.
     """
-    name: str = 'default_name'
+    endpoints: str | list[str]
     subject: Subject = None
+
+    def __post_init__(self):
+        self.subject = Subject(self.endpoints)
 
     def query(
             self, 
