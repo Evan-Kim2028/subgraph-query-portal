@@ -8,22 +8,6 @@ from subgrounds.schema import TypeRef
 ##############################################
 # Subgrounds Support Functions
 ##############################################
-def synthetic_convert(type, deps) -> SyntheticField:
-    """
-    NOTE - Currently not being used
-    Creates a new synthetic field path with a different type
-    """
-    match type:
-        case SyntheticField.STRING:
-            return SyntheticField(lambda value: str(value), SyntheticField.STRING, deps)
-        case SyntheticField.INT:
-            return SyntheticField(lambda value: int(value), SyntheticField.INT, deps)
-        case SyntheticField.FLOAT:
-            return SyntheticField(lambda value: float(value), SyntheticField.FLOAT, deps)
-        case SyntheticField.BOOL:
-            return SyntheticField(lambda value: bool(value), SyntheticField.BOOL, deps)
-        
-
 @cache
 def get_subgrounds():
     """
@@ -96,3 +80,19 @@ def create_filter_dict(filter_dict: dict) -> dict:
 
     else:               # if filter_dict is empty, return an empty dictionary. Note we need to return an empty dictionary instead of a None value because Subgrounds requires a dictionary as a required input
         return {}
+    
+
+def synthetic_convert(type, deps) -> SyntheticField:
+    """
+    NOTE - Currently not being used
+    Creates a new synthetic field path with a different type
+    """
+    match type:
+        case SyntheticField.STRING:
+            return SyntheticField(lambda value: str(value), SyntheticField.STRING, deps)
+        case SyntheticField.INT:
+            return SyntheticField(lambda value: int(value), SyntheticField.INT, deps)
+        case SyntheticField.FLOAT:
+            return SyntheticField(lambda value: float(value), SyntheticField.FLOAT, deps)
+        case SyntheticField.BOOL:
+            return SyntheticField(lambda value: bool(value), SyntheticField.BOOL, deps)
