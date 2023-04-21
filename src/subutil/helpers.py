@@ -75,7 +75,6 @@ def create_filter_dict(filter_dict: dict) -> dict:
                     temp_dict[new_key] = {}
                     temp_dict = temp_dict[new_key]
 
-        print(output_dict)
         return output_dict
 
     else:               # if filter_dict is empty, return an empty dictionary. Note we need to return an empty dictionary instead of a None value because Subgrounds requires a dictionary as a required input
