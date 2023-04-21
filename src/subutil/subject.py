@@ -26,15 +26,18 @@ class Subject:
         """
         loads subgraph endpoints into Subgrounds
         """
-        for endpoint in endpoints:
-            self.subgraphs[endpoint.split('/')[-1]] = self.sg.load(endpoint)
+        if isinstance(endpoints, list):
+            for endpoint in endpoints:
+                self.subgraphs[endpoint.split('/')[-1]] = self.sg.load(endpoint)
+        if isinstance(endpoints, str):
+                self.subgraphs[endpoints.split('/')[-1]] = self.sg.load(endpoints)
 
 
-    # def getSubgraphSchema(self) -> list[str]:
-    #     """
-    #     getSubgraphSchema gets the Subgraph schema and returns a list.
-    #     """
-    #     return list(name for name, type_ in self.subgraph._schema.type_map.items() if type_.is_object)
+    def getSubgraphSchema(self) -> list[str]:
+        """
+        getSubgraphSchema gets the Subgraph schema and returns a list.
+        """
+        return list(name for name, type_ in self.subgraph._schema.type_map.items() if type_.is_object)
 
 
     
