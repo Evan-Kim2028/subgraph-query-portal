@@ -77,7 +77,6 @@ def fmt_dict_cols(df: pl.DataFrame) -> pl.DataFrame:
     """
     for column in df.columns:
         if isinstance(df[column][0], dict):  
-            print(column)
             col_names = df[column][0].keys()
             # rename struct columns
             struct_df = df.select(
@@ -100,7 +99,6 @@ def fmt_arr_cols(df: pl.DataFrame) -> pl.DataFrame:
     # use this logic if column is a list (rows show up as pl.Series)
     for column in df.columns:
         if isinstance(df[column][0], pl.Series):
-            print(column)
             # convert struct to array
             struct_df = df.select([pl.col(column).arr.to_struct()])
             # rename struct fields
