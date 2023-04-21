@@ -5,8 +5,10 @@ from subgrounds import Subgrounds
 from subgrounds.schema import TypeRef
 from subgrounds.subgraph import Subgraph
 from subgrounds.subgraph import SyntheticField
-from queryportal.helpers import *
 from queryportal.queryinterface import QueryInterface
+
+from queryportal.helpers import *
+from subutil.helpers import *
 
 @dataclass
 class Dex(QueryInterface):

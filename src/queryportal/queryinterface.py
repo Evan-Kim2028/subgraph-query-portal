@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from queryportal.helpers import *
+from subutil.helpers import *
 
 class QueryInterface(ABC):
     """

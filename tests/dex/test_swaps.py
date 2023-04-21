@@ -19,8 +19,9 @@ filter_dict = {
 }
 
 query_cols = [
-    'timestamp', 
+    # 'timestamp', 
     # 'hash',
+    'datetime', #synthetic field
     'pool_name', 
     # 'pool_inputTokens_name', # this returns an array of values which doubles amount of rows due to flattening logic in Subgrounds
     'tokenIn_symbol', 
@@ -31,10 +32,6 @@ query_cols = [
     # 'amountIn',
     ]
 
-df = my_dex.query_swaps(
-    query_paths = query_cols,
-    query_size = 500,
-    filter_dict = filter_dict
-    )
+df = my_dex.query_swaps(query_paths=query_cols, filter_dict=filter_dict, query_size=100, add_endpoint_col=False)
 
 print(df)
