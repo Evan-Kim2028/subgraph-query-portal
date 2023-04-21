@@ -76,13 +76,15 @@ class Dex(QueryInterface):
                 assert len(self.subject.subgraphs) == 1 # check that there is only 1 subgraph endpoint loaded
                 single_key = list(self.subject.subgraphs.keys())
                 subject_key = self.subject.subgraphs[single_key[0]]
+                print(f'Subgraph endpoint: {single_key[0]}')
             except AssertionError:
                 print(f'{len(self.subject.subgraphs)} subgraph endpoints were loaded. Please specify 1 subgraph name.')
                 return
         else:
             # load subgraph from the key name
             subject_key = self.subject.subgraphs[subgraph_name]
-            
+            print(f'Subgraph endpoint: {subgraph_name} ')
+
         # define query search params based off of filter_dict
         swaps_qp = subject_key.Query.swaps(
             first=query_size,

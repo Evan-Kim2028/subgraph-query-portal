@@ -46,7 +46,8 @@ univ3_arb = dex.query_swaps(
     )
 
 
-
+print(univ3_eth.head(5))
+print(univ3_arb.head(5))
 
 
 
