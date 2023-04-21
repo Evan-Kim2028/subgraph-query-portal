@@ -33,11 +33,17 @@ class Subject:
                 self.subgraphs[endpoints.split('/')[-1]] = self.sg.load(endpoints)
 
 
-    def getSubgraphSchema(self) -> list[str]:
+    def getSubgraphSchema(self, sg: Subgraph) -> list[str]:
         """
         getSubgraphSchema gets the Subgraph schema and returns a list.
         """
-        return list(name for name, type_ in self.subgraph._schema.type_map.items() if type_.is_object)
+        return list(name for name, type_ in sg._schema.type_map.items() if type_.is_object)
+    
+    # def get_entity_cols(self, sg: Subgraph) -> list[str]:
+    #     """
+    #     get_entity_cols gets the columns for a specific entity.
+    #     """
+    #     return list((field.name, TypeRef.graphql(field.type_)) for field in sg._object.fields)
 
 
     
