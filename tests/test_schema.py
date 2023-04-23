@@ -1,4 +1,5 @@
 from subutil.subject import Subject
+from subutil.helpers import *
 
 sub = Subject([
     'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum',
@@ -13,16 +14,17 @@ sg_key = list(sub.subgraphs.keys())[0]
 sg_obj = sub.subgraphs[sg_key]
 
 # get all schema entities
-schema_list = sub.getSubgraphSchema(sg_obj)
+schema_list = getSubgraphSchema(sg_obj)
 print(f'\nschema_list: \n{schema_list}')
 
 # select queryable schema entities
 schema_fp_list = schema_list.index('Query')
 
-query_field = sub.getQueryFields('uniswap-v3-ethereum', schema_list[schema_fp_list])
+query_field = getQueryFields(sg_obj, schema_list[schema_fp_list])
 print(f'\nquery_field: \n{query_field}')
 
 print(f'\nthe first query field is: {query_field[0]}')
 # schema_list = sub.get_entity_cols(schema_list[0])
+
 
 print('\ndone')

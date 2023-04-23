@@ -1,8 +1,7 @@
 from functools import  cache
 from subgrounds import Subgrounds
-from subgrounds.subgraph import SyntheticField
+from subgrounds.subgraph import Subgraph, SyntheticField
 from subgrounds.subgraph.fieldpath import FieldPath
-from subgrounds.schema import TypeRef
 
 
 ##############################################
@@ -80,6 +79,46 @@ def create_filter_dict(filter_dict: dict) -> dict:
     else:               # if filter_dict is empty, return an empty dictionary. Note we need to return an empty dictionary instead of a None value because Subgrounds requires a dictionary as a required input
         return {}
     
+
+def getQueryFields(sg: Subgrounds, schema: str) -> list[str]:
+    """
+    Get all queryable fields from the subgraph schema.
+    :return: list[str] of queryable fields from the subgraph schema
+    """
+    query_field_paths = getSchemaFields(sg, schema)
+
+    return query_field_paths
+
+
+def getSchemaFields(sg: Subgrounds, schema_str: str) -> list[str]:
+    """
+    getSubgraphField gets a fields list from a subgraph schema.
+    :param str schema_str: Schema object name to get fields list from
+    :param str operation: Enter one of the following - 'Query', 'Mutation', or 'Subscription'. Default is 'Query' because that is most commonly used.
+    :return: strings field list from a Subgraph schema
+    """
+    return list(field.name for field in sg.__getattribute__(schema_str)._object.fields)
+
+
+def getSubgraphSchema(sg: Subgraph) -> list[str]:
+    """
+    getSubgraphSchema gets the Subgraph schema and returns a list.
+    """
+    return list(name for name, type_ in sg._schema.type_map.items() if type_.is_object)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def synthetic_convert(type, deps) -> SyntheticField:
     """
