@@ -1,5 +1,5 @@
 from subutil.subject import Subject
-from subutil.schema_query import *
+from subutil.schema_utils import *
 
 from collections import OrderedDict
 
