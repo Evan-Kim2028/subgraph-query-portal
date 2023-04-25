@@ -3,9 +3,9 @@ import polars as pl
 from dataclasses import dataclass
 
 from queryportal.queryinterface import QueryInterface
+from queryportal.polars_helpers import *
 from subutil.subject import Subject
-from queryportal.helpers import *
-from subutil.helpers import *
+from subutil.fieldpath_query import *
 
 @dataclass
 class Dex(QueryInterface):
