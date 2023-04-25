@@ -8,7 +8,7 @@ from subgrounds.subgraph import SyntheticField
 from queryportal.queryinterface import QueryInterface
 
 from queryportal.polars_helpers import *
-from subutil.fieldpath_query import *
+from subutil.fieldpath_utils import *
 
 @dataclass
 class Dex(QueryInterface):

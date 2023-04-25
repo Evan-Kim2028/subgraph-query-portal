@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from queryportal.polars_helpers import *
-from subutil.fieldpath_query import *
+from subutil.fieldpath_utils import *
 
 class QueryInterface(ABC):
     """
-    The QueryInterface abstract class provides a standard interface for querying data from a data source. 
+    The QueryInterface abstract class provides a standard interface for querying data from a Subgraph object. 
     By defining the query method as abstract, it forces any class that inherits from QueryInterface to implement its own version of the query method, 
     which ensures that all implementing classes have a consistent API. 
     Additionally, the class includes decorators such as @timeit and @df_describe which add additional functionality to the query method.

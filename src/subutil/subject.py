@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
-from subutil.fieldpath_query import *
+from subutil.fieldpath_utils import *
+from subutil.schema_utils import *
 
 from subgrounds import Subgrounds
 from subgrounds.subgraph import Subgraph
@@ -33,6 +34,18 @@ class Subject:
                 self.subgraphs[endpoint.split('/')[-1]] = self.sg.load(endpoint)
         if isinstance(endpoints, str):
                 self.subgraphs[endpoints.split('/')[-1]] = self.sg.load(endpoints)
+
+    def load_schema(self, sg: Subgraph) -> dict:
+        """
+        loads subgraph schema into Subgrounds
+        """
+        # 2c) Get all schema entities
+        schema_list = getSubgraphSchema(sg)
+
+        # 3) Select queryable schema entities
+        query_field_dict = getQueryFields(sg, schema_list[schema_list.index('Query')])
+
+        return query_field_dict
 
 
 
