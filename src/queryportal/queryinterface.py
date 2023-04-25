@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from queryportal.helpers import *
-from subutil.helpers import *
+from queryportal.polars_helpers import *
+from subutil.fieldpath_query import *
 
 class QueryInterface(ABC):
     """
