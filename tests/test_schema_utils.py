@@ -24,21 +24,25 @@ sg_obj = sub.subgraphs[sg_key]
 
 # 2c) Get all schema entities
 schema_list = getSubgraphSchema(sg_obj)
+print(schema_list)
+
+# 2d) Get Schema Fields
+schema_fields = getSchemaFields(sg_obj, schema_list[0])
+# print(f'\n{schema_list[0]} schema_fields: {schema_fields.keys()}')
+print(schema_fields["positions"])
+print(f'type is {type(schema_fields["positions"])}')    # fieldmeta type
 
 # 3) Select queryable schema entities
 query_field = getQueryFields(sg_obj, schema_list[schema_list.index('Query')])
-print(f'\nAll queryable fields are: {query_field}')
+print(f'\nAll queryable fields are: {query_field}\n')
+print(f'type is {type(query_field)}\n')    # dict type
+print(f'\n{query_field["positions"]}')
 
-# Get Schema Fields
-schema_fields = getSchemaFields(sg_obj, schema_list[0])
-print(f'\n{schema_list[0]} schema_fields: {schema_fields}')
+
 
 # get col fields
 col_fields = getColFields(sg_obj, schema_list[0])
 print(f'\n{schema_list[0]} col_fields: {col_fields}')   # the value outputs are just strings...
-
-
-
 
 # TEST STUFF
 col_dict = OrderedDict(col_fields)

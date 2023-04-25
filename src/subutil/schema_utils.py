@@ -17,24 +17,44 @@ def getSubgraphSchema(sg: Subgraph) -> list[str]:
     """
     return list(name for name, type_ in sg._schema.type_map.items() if type_.is_object)
 
-def getQueryFields(sg: Subgrounds, schema: str) -> list[str]:
-    """
-    Get all queryable fields from the subgraph schema.
-    :return: list[str] of queryable fields from the subgraph schema
-    """
-    query_field_paths = getSchemaFields(sg, schema)
+# def getSchemaFields(sg: Subgrounds, schema_str: str) -> dict:
+#     """
+#     getSubgraphField gets a fields list from a subgraph schema.
+#     :param str schema_str: Schema object name to get fields list from
+#     :param str operation: Enter one of the following - 'Query', 'Mutation', or 'Subscription'. Default is 'Query' because that is most commonly used.
+#     :return: strings field list from a Subgraph schema
+#     """
+    
+#     return list(field.name for field in sg.__getattribute__(schema_str)._object.fields)
 
-    # fields that do not end with s are not queryable.
-    return [field for field in query_field_paths if field.endswith('s')]
-
-def getSchemaFields(sg: Subgrounds, schema_str: str) -> list[str]:
+def getSchemaFields(sg: Subgrounds, schema_str: str) -> dict:
     """
     getSubgraphField gets a fields list from a subgraph schema.
     :param str schema_str: Schema object name to get fields list from
     :param str operation: Enter one of the following - 'Query', 'Mutation', or 'Subscription'. Default is 'Query' because that is most commonly used.
-    :return: strings field list from a Subgraph schema
+    :return: dictionary containing field names and their types from a Subgraph schema
     """
-    return list(field.name for field in sg.__getattribute__(schema_str)._object.fields)
+    fields_dict = {}
+    fields = sg.__getattribute__(schema_str)._object.fields # its a list type
+    for field in fields:
+        fields_dict[field.name] = field
+    return fields_dict
+
+
+def getQueryFields(sg: Subgrounds, schema: str) -> dict:
+    """
+    Get all queryable fields from the subgraph schema by filtering out fields that end with s
+    """
+    query_schema_dict = getSchemaFields(sg, schema)
+
+    # if query_schema_dict key ends with s, then remove from dictionary
+    for key in list(query_schema_dict.keys()):
+        if not key.endswith('s'):
+            # print(f'removed {key}')
+            del query_schema_dict[key]
+
+    return query_schema_dict
+
 
 def getColFields(sg: Subgrounds, schema_str: str):
     """
