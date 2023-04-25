@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from queryportal.queryinterface import QueryInterface
 from queryportal.polars_helpers import *
 from subutil.subject import Subject
-from subutil.fieldpath_query import *
+from subutil.fieldpath_utils import *
 
 @dataclass
 class Dex(QueryInterface):
@@ -60,12 +60,14 @@ class Dex(QueryInterface):
     @df_describe
     def query_swaps(self, subgraph_name: str = None, query_paths: list[str] = None, query_size=5, filter_dict={}, saved_file_name=None, add_endpoint_col=True) -> pl.DataFrame:
         """
-        This method allows query construction from the Swap entity. It takes in query parameters as inputs and returns a 
+        This method constructs a query from the Swap entity. It takes in query parameters as inputs and returns a 
         Polars DataFrame of the query results. The method also adds a datetime column to the swaps entity by converting the 
         timestamp column to datetime format using a synthetic field. The `add_endpoint_col` parameter is used to add the 
         endpoint column to the query results if set to True.
         """
 
+################################################################################################################################
+# Package a filter dictionary based off of key value inputs.
         # create modified filter dict that conforms to required Subgrounds query format
         new_filter_dict = create_filter_dict(filter_dict)
 
@@ -82,7 +84,7 @@ class Dex(QueryInterface):
             # load subgraph from the key name
             subject_key = self.subject.subgraphs[subgraph_name]
             print(f'Subgraph endpoint: {subgraph_name} ')
-
+#################################################################################################################################
         # define query search params based off of filter_dict
         swaps_qp = subject_key.Query.swaps(
             first=query_size,
@@ -90,6 +92,8 @@ class Dex(QueryInterface):
             orderDirection='desc',
             where = new_filter_dict
         )
+
+#################################################################################################################################
 
         matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = swaps_qp)
         return self.query(

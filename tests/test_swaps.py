@@ -36,24 +36,10 @@ for subgraph_name in list(dex.subject.subgraphs.keys()):
     print(df.head(5))
 
 
-
-
-# # CURRENT
-# df = dex.query_swaps(
-#     subgraph_name=subgraph_name, 
-#     query_paths=query_paths,
-#     filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
-#     )
-
-# df = dex.query_tokens(
-#     subgraph_name=subgraph_name, 
-#     query_paths=query_paths,
-#     filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
-#     )
-
 # # AFTER
 # df = dex.query(
 #     entity='swaps',
+#     orderBy='timestamp',
 #     subgraph_name=subgraph_name, 
 #     query_paths=query_paths,
 #     filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
@@ -62,6 +48,7 @@ for subgraph_name in list(dex.subject.subgraphs.keys()):
 
 # df = dex.query(
 #     entity='tokens',
+#     orderBy='symbol',
 #     subgraph_name=subgraph_name, 
 #     query_paths=query_paths,
 #     filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
