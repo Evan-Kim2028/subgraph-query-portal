@@ -1,4 +1,3 @@
-from subutil.subject import Subject
 from queryportal.new_dex import Dex
 
 import polars as pl
