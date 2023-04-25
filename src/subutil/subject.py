@@ -1,10 +1,13 @@
 from dataclasses import dataclass, field
-from subutil.helpers import *
+from subutil.fieldpath_query import *
 
 from subgrounds import Subgrounds
 from subgrounds.subgraph import Subgraph
-from subgrounds.subgraph import SyntheticField
 
+########################################################
+# Subject is a collection of Subgrounds objects. 
+# Manage a collection of Subgraphs via subgraph endpoint keys.
+########################################################
 
 @dataclass
 class Subject:
