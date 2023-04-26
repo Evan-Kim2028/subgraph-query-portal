@@ -44,8 +44,13 @@ class Subject:
 
         # 3) Select queryable schema entities
         query_field_dict = getQueryFields(sg, schema_list[schema_list.index('Query')])
-
-        return query_field_dict
+        
+        return_dict = {}
+        # for every value in query_field_dict keys, get the field path and add it to the return dict
+        for key in query_field_dict.keys():
+            return_dict[key] = getFieldPath(sg, key)
+            
+        return return_dict
 
 
 
