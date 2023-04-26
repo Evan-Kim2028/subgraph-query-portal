@@ -1,30 +1,34 @@
-from queryportal.new_dex import Dex
+from queryportal.subgraphinterface import SubgraphInterface as sgi
 
 import polars as pl
 pl.Config.set_fmt_str_lengths(200)
 
 
+# swaps
+# liquidity pool / tokens
+# pooldailysnapshots
+#
+
+
 # instantiate Dex class with subgraph key
-dex = Dex(endpoints='https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum')
+sgi = sgi(endpoints=[
+    'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum', 
+    'https://api.thegraph.com/subgraphs/name/cowprotocol/cow'
+                     ])
 
-query_paths = [
-    'hash',
-    'pool_name', 
-    # 'pool_inputTokens_name', #This is a nested struct. Although there is logic to handle a single struct, it is not yet implemented for nested structs. Not sure if it should be either.
-    'tokenIn_symbol', 
-    'tokenOut_symbol', 
-    'amountOutUSD', 
-    'amountInUSD',
-    'amountOut',
-    'amountIn',
-    ]
-
-df = dex.generic_query(
+df1 = sgi.query_entity(
     entity='swaps',
-    # orderBy='symbol',
-    subgraph_name='uniswap-v3-ethereum', 
-    query_paths=query_paths,
-    filter_dict = {'tokenIn_symbol': 'WETH', 'amountOutUSD_lt': .001}
+    name='uniswap-v3-ethereum', 
+    )
+print(df1.head(5))
+
+
+df2 = sgi.query_entity(
+    entity='trades',
+    name='cow', 
     )
 
-print(df.head(5))
+print(df2.head(5))
+
+# index in a polars dataframe vs pandas dataframe?
+# need a 'standard' index to pivot onto. Need the same minutes to be contained on the data
