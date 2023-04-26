@@ -20,28 +20,31 @@ sub = Subject([
 sg_key = list(sub.subgraphs.keys())[0]
 
 # 2b) Load subgraph object
-sg_obj = sub.subgraphs[sg_key]
+sg = sub.subgraphs[sg_key]
 
 # 2c) Get all schema entities
-schema_list = getSubgraphSchema(sg_obj)
+schema_list = getSubgraphSchema(sg)
 print(schema_list)
 
 # 2d) Get Schema Fields
-schema_fields = getSchemaFields(sg_obj, schema_list[0])
+schema_fields = getSchemaFields(sg, schema_list[0])
 # print(f'\n{schema_list[0]} schema_fields: {schema_fields.keys()}')
-print(schema_fields["positions"])
-print(f'type is {type(schema_fields["positions"])}')    # fieldmeta type
+# print(schema_fields["swaps"])
+print(f'swaps type is {type(schema_fields["swaps"])}')    # fieldmeta type
 
 # 3) Select queryable schema entities
-query_field = getQueryFields(sg_obj, schema_list[schema_list.index('Query')])
-print(f'\nAll queryable fields are: {query_field}\n')
-print(f'type is {type(query_field)}\n')    # dict type
-print(f'\n{query_field["positions"]}')
+query_field = getQueryFields(sg, schema_list[schema_list.index('Query')])
+print(f'\nAll queryable fields are: {query_field.keys()}\n')
+# print(f'type is {type(query_field)}\n')    # dict type
+# print(f'\n{query_field["swaps"]}')
+
+my_fp = getFieldPath(sg, 'swaps')
+print(f'\nmy_fp is {my_fp} and type is {type(my_fp)}\n')
 
 
 
 # get col fields
-col_fields = getColFields(sg_obj, schema_list[0])
+col_fields = getColFields(sg, schema_list[0])
 print(f'\n{schema_list[0]} col_fields: {col_fields}')   # the value outputs are just strings...
 
 # TEST STUFF

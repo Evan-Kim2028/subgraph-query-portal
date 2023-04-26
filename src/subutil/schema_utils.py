@@ -3,7 +3,7 @@ from typing import Any, Dict, Type
 
 
 from subgrounds import Subgrounds
-from subgrounds.subgraph import Subgraph
+from subgrounds.subgraph import Subgraph, FieldPath
 from subgrounds.schema import TypeRef
 
 
@@ -54,6 +54,16 @@ def getQueryFields(sg: Subgrounds, schema: str) -> dict:
             del query_schema_dict[key]
 
     return query_schema_dict
+
+def getFieldPath(sg: Subgrounds, field: str,  operation: str ='Query') -> FieldPath:
+    """
+    getFieldPath converts a string to a FieldPath object. In a Subgrounds query, the format follows subgrounds.schema.FieldPath.
+    :param str field: Enter the string that will be converted to a FieldPath
+    :param str operation: Enter one of the following - 'Query', 'Mutation', or 'Subscription'. Default is 'Query' because that is most commonly used. 
+    :return: FieldPath object
+    """
+    return sg.__getattribute__(operation).__getattribute__(field)
+    
 
 
 def getColFields(sg: Subgrounds, schema_str: str):
