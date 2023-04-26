@@ -24,11 +24,14 @@ query_paths = [
     'amountIn',
     ]
 
+filter_dict = {'tokenIn_symbol': "WETH"}
+
 for subgraph_name in list(univ3.subject.subgraphs.keys()):
     print('subgraph_name: ', subgraph_name)
     df = univ3.query_entity(
         entity='swaps',
         name=subgraph_name,
-        query_paths=query_paths
+        query_paths=query_paths,
+        filter_dict=filter_dict,
         )
     print(df.head(5))
