@@ -3,13 +3,6 @@ from queryportal.subgraphinterface import SubgraphInterface as sgi
 import polars as pl
 pl.Config.set_fmt_str_lengths(200)
 
-
-# swaps
-# liquidity pool / tokens
-# pooldailysnapshots
-#
-
-
 # instantiate Dex class with subgraph key
 sgi = sgi(endpoints=[
     'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum', 
@@ -25,7 +18,7 @@ print(df1.head(5))
 
 df2 = sgi.query_entity(
     entity='trades',
-    name='cow', 
+    name='cow'
     )
 
 print(df2.head(5))
