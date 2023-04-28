@@ -2,7 +2,7 @@ import polars as pl
 
 from dataclasses import dataclass
 
-from queryportal.polars_helpers import *
+from queryportal.polars_utils import *
 from subutil.subject import Subject
 from subutil.fieldpath_utils import *
 
