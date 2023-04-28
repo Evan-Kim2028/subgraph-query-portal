@@ -76,17 +76,20 @@ def create_filter_dict(filter_dict: dict) -> dict:
                 # append new_key
                 key_parts.append(new_key)
 
-        # make a new dictionary based off of the key_parts
-        temp_dict = output_dict
-        for i in range(len(key_parts)):
-            if key_parts[i] not in temp_dict:
-                if i == len(key_parts) - 1:
-                    temp_dict[key_parts[i]] = {}
-                    temp_dict[key_parts[i]] = filter_dict[key]
-                else:
-                    new_key = key_parts[i] + '_'
-                    temp_dict[new_key] = {}
-                    temp_dict = temp_dict[new_key]
+            # make a new dictionary based off of the key_parts
+            temp_dict = output_dict
+            for i in range(len(key_parts)):
+                if key_parts[i] not in temp_dict:
+                    if i == len(key_parts) - 1:
+                        temp_dict[key_parts[i]] = {}
+                        temp_dict[key_parts[i]] = filter_dict[key]
+                    else:
+                        new_key = key_parts[i] + '_'
+                        temp_dict[new_key] = {}
+                        temp_dict = temp_dict[new_key]
+
+        # print('filter dict before: ', filter_dict)
+        # print('filter dict after: ', output_dict)
 
         return output_dict
 
