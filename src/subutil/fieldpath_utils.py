@@ -3,6 +3,7 @@ from typing import Any, Dict
 
 
 from subgrounds import Subgrounds
+from subgrounds.schema import TypeRef
 from subgrounds.subgraph import SyntheticField
 from subgrounds.subgraph.fieldpath import FieldPath
 
@@ -37,8 +38,17 @@ def create_query_path(default_query_path: FieldPath, query_paths: list[str]) -> 
     """
     new_query_path_list = []
     for variable in query_paths:
+        # TODO - add a check statement. Do not split if variable doesn't belong to an entity...
         variable_parts = variable.split('_')    # split if need to split
         modified_qp = default_query_path  # start with new qp
+        # #DEBUG print statement
+        # print(f'DEBUG - query path: {default_query_path}')
+        # # get column names for default_query_path
+        # col_list = list((field.name, TypeRef.graphql(field.type_)) for field in default_query_path)
+        # print(f'col list: {col_list}')
+
+
+
         for i in range(len(variable_parts)):
             modified_qp = modified_qp._select(variable_parts[i])
         new_query_path_list.append(modified_qp)
