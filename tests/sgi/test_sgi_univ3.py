@@ -16,6 +16,8 @@ univ3 = sgi(endpoints=endpoints)
 query_paths = [
     'hash',
     'pool_name', 
+    'pool_inputTokenBalances',
+    'pool_fees',
     'tokenIn_symbol', 
     'tokenOut_symbol', 
     'amountOutUSD', 
