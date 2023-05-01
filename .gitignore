@@ -65,3 +65,4 @@ scratch/*
 src/queryportal/dex_old.py
 *.parquet
 query_library/
+.env
