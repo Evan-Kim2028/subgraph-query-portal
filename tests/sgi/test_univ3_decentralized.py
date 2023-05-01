@@ -4,13 +4,15 @@ import polars as pl
 pl.Config.set_fmt_str_lengths(200)
 
 # instantiate Dex class with subgraph key
-sgi = SubgraphInterface(endpoints={'univ3_decentralized': 'https://api.playgrounds.network/v1/proxy/subgraphs/id/FQ6JYszEKApsBpAmiHesRsd9Ygc6mzmpNRANeVQFYoVX'})
+# ETH = G3JZhmKKHC4mydRzD6kSz5fCWve5WDYYCyTFSJyv3SD5
+# ARB = FQ6JYszEKApsBpAmiHesRsd9Ygc6mzmpNRANeVQFYoVX
+sgi = SubgraphInterface(endpoints={'univ3_decentralized': 'https://api.playgrounds.network/v1/proxy/subgraphs/id/G3JZhmKKHC4mydRzD6kSz5fCWve5WDYYCyTFSJyv3SD5'})
 
 print(f'subject endpoints: {sgi.subject.subgraphs.keys()}')
 
 
 df2 = sgi.query_entity(
-    entity='tokens',
+    entity='deposits',
     name='univ3_decentralized'
     )
 
