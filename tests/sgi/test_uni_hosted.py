@@ -22,7 +22,7 @@ print(df1.head(5))
 
 df2 = sgi.query_entity(
     entity='swaps',
-    name='univ3_decentralized'
+    name='univ3_decentralized',
     )
 
 print(df2.head(5))

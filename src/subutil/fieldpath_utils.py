@@ -23,7 +23,7 @@ def get_subgrounds():
 
 def match_query_paths(default_query_path: FieldPath, query_paths: list[str] = None) -> FieldPath | list[FieldPath]:
     """
-    Matches query_paths to query_path_cols
+    Matches query_paths to query_path_cols.
     """
     match query_paths:
         case None:
@@ -58,7 +58,6 @@ def create_filter_dict(filter_dict: dict) -> dict:
     """
     Takes the query filter dictionary input and reformats it with nested dictionaries, if required, to conform to Subgrounds query input.
     """
-
     if len(filter_dict) != 0:   # check if filter_dict is empty. If it is not, continue.
         keyword_list = ['in', 'not', 'gt', 'gte', 'lt', 'lte', 'not_in', 'contains', 'not_contains']
 
