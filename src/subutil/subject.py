@@ -21,7 +21,7 @@ class Subject:
     Mnages the Subgrounds object for queryportal classes.
     Collection of subgraph endpoints.
     """
-    initial_endpoints: str | list[str]  # instantiate class with this variable
+    initial_endpoints: str | list[str] | dict  # instantiate class with this variable
 
     subgraphs: dict[str, Subgraph] = field(default_factory=dict)    # empty dict that gets populated on init
     sg: Subgrounds = field(default_factory=get_subgrounds)      # default subgrounds configuration
@@ -41,6 +41,10 @@ class Subject:
                 self.subgraphs[endpoint.split('/')[-1]] = self.sg.load(endpoint)
         if isinstance(endpoints, str):
                 self.subgraphs[endpoints.split('/')[-1]] = self.sg.load(endpoints)
+        if isinstance(endpoints, dict):
+            self._update_header()
+            for key, value in endpoints.items():
+                self.subgraphs[key] = self.sg.load(value)
 
     def _update_header(self):
          """
@@ -57,8 +61,8 @@ class Subject:
 
     def load_decentralized_endpoints(self, endpoints: dict):
         """
-        loads decentralized subgraph endpoints into the Subgrounds object. Endpoints is a dict as opposed to a list
-        a string or list so that the names of the endpoints can be customized.
+        loads decentralized subgraph endpoints into the Subgrounds object. Call this after loading hosted service endpoints.
+        Endpoints is a dict as opposed to a string or list so that the names of the endpoints can be customized.
         """
 
         # add playgrounds api key to header.
