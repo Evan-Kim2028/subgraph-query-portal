@@ -10,7 +10,7 @@ print(f'subject endpoints: {sub.subgraphs.keys()}')
 
 # load decentralized endpoint
 sub.load_decentralized_endpoints(
-    {'univ3_decentralized': 'https://api.playgrounds.network/v1/proxy/subgraphs/id/FQ6JYszEKApsBpAmiHesRsd9Ygc6mzmpNRANeVQFYoVX'
+    {'univ3_decentralized': 'https://api.playgrounds.network/v1/proxy/subgraphs/id/G3JZhmKKHC4mydRzD6kSz5fCWve5WDYYCyTFSJyv3SD5'    # decentralized endpoint
      }
      )
 
