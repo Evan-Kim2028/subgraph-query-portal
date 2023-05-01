@@ -1,7 +1,5 @@
 from functools import  cache
 from typing import Any, Dict
-
-
 from subgrounds import Subgrounds
 from subgrounds.schema import TypeRef
 from subgrounds.subgraph import SyntheticField
@@ -20,7 +18,8 @@ def get_subgrounds():
     calls to this function, rather than being recomputed every time. 
 
     """
-    return Subgrounds()
+    # initialize 
+    return Subgrounds(headers={"Playgrounds-Api-Key": None})
 
 def match_query_paths(default_query_path: FieldPath, query_paths: list[str] = None) -> FieldPath | list[FieldPath]:
     """
