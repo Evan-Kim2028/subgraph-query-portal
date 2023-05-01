@@ -66,14 +66,14 @@ class SubgraphInterface:
                 assert len(self.subject.subgraphs) == 1 # check that there is only 1 subgraph endpoint loaded
                 single_key = list(self.subject.subgraphs.keys())
                 sg_key = self.subject.subgraphs[single_key[0]]
-                print(f'Subgraph endpoint: {single_key[0]} with type {type(sg_key)}')
+                print(f'Querying subgraph endpoint: {single_key[0]}')
             except AssertionError:
                 print(f'{len(self.subject.subgraphs)} subgraph endpoints were loaded. Please specify 1 subgraph name.')
                 return
         else:
             # load subgraph from the key name
             sg_key = self.subject.subgraphs[name]
-            print(f'Subgraph endpoint: {name} with type {type(sg_key)}')
+            print(f'Querying subgraph endpoint: {name}')
 
         # get schema
         query_dict = self.subject.load_schema(sg_key)   # BUG - returning FieldMeta instead of a fp
