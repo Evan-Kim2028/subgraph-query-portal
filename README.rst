@@ -128,3 +128,10 @@ Some reasons why a developer would want to contribute their subgraph queries to 
 - Provides a common interface for querying subgraphs
 - Provides polars dataframe output by default
 - Use existing subgraph queries as building blocks for other queries
+
+
+Query the Decentralized Network (In Progress)
+========================
+Create a .env file in the directory and enter the playgrounds api key PG_KEY =api-key
+
+Then load a header into subgrounds object...this will be a slightly different input in queryportal
