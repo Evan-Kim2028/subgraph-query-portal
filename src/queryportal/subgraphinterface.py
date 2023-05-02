@@ -76,7 +76,7 @@ class SubgraphInterface:
             print(f'Querying subgraph endpoint: {name}')
 
         # get schema
-        query_dict = self.subject.load_schema(sg_key)   # BUG - returning FieldMeta instead of a fp
+        query_dict = self.subject.load_schema(sg_key)
 
         # create modified filter dict that conforms to required Subgrounds query format
         new_filter_dict = create_filter_dict(filter_dict)
@@ -88,6 +88,9 @@ class SubgraphInterface:
         )
 
         matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = generic_qp)
+        
+        print(f'DEBUG matched_query_path output: {matched_query_path}')
+        
         return self.query(
                     query_path=matched_query_path,
                     saved_file_name=saved_file_name,

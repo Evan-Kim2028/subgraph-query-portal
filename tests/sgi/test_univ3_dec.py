@@ -6,15 +6,26 @@ pl.Config.set_fmt_str_lengths(200)
 # instantiate Dex class with subgraph key
 eth = 'G3JZhmKKHC4mydRzD6kSz5fCWve5WDYYCyTFSJyv3SD5'
 arb = 'FQ6JYszEKApsBpAmiHesRsd9Ygc6mzmpNRANeVQFYoVX'
-sgi = SubgraphInterface(endpoints={'univ3_decentralized': f'https://api.playgrounds.network/v1/proxy/subgraphs/id/{eth}'})
+
+
+sgi = SubgraphInterface(
+    endpoints={'univ3_eth': f'https://api.playgrounds.network/v1/proxy/subgraphs/id/{eth}',
+                'univ3_arb': f'https://api.playgrounds.network/v1/proxy/subgraphs/id/{arb}'
+               }
+    )
 
 print(f'subject endpoints: {sgi.subject.subgraphs.keys()}')
 
-# print(f'schema for univ3_decentralized: {sgi.subject.subgraphs["univ3_decentralized"]._schema}')
+df1 = sgi.query_entity(
+    entity='deposits',
+    name='univ3_arb'
+    )
+
+print(df1.head(5))
 
 df2 = sgi.query_entity(
-    entity='swaps',
-    name='univ3_decentralized'
+    entity='deposits',
+    name='univ3_eth'
     )
 
 print(df2.head(5))
