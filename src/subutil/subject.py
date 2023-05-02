@@ -8,8 +8,6 @@ from subutil.schema_utils import *
 from subgrounds import Subgrounds
 from subgrounds.subgraph import Subgraph
 
-load_dotenv()
-
 ########################################################
 # Subject is a collection of Subgrounds objects. 
 # Manage a collection of Subgraphs via subgraph endpoint keys.
@@ -54,6 +52,7 @@ class Subject:
          if self.sg.headers["Playgrounds-Api-Key"] is None:
             # check if .env file exists with try/except
             try:
+                load_dotenv()
                 self.sg.headers["Playgrounds-Api-Key"] = os.environ['PG_KEY']
             except ValueError:
                 print('No .env file found. Please add a .env file with your playgrounds api key.')
