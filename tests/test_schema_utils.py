@@ -10,10 +10,16 @@ from collections import OrderedDict
 
 
 # 1) Load Subject with endpoints.
-sub = Subject([
-    'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum',
-    'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-arbitrum'
-    ])
+# sub = Subject([
+#     'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-ethereum',
+#     'https://api.thegraph.com/subgraphs/name/messari/uniswap-v3-arbitrum'
+#     ])
+
+# instantiate Dex class with subgraph key
+eth = 'G3JZhmKKHC4mydRzD6kSz5fCWve5WDYYCyTFSJyv3SD5'
+arb = 'FQ6JYszEKApsBpAmiHesRsd9Ygc6mzmpNRANeVQFYoVX'
+sub = Subject({'univ3_decentralized': f'https://api.playgrounds.network/v1/proxy/subgraphs/id/{eth}'})
+
 
 
 # 2a) Retrieve Subgraph endpoint key.
@@ -28,8 +34,8 @@ print(schema_list)
 
 # 2d) Get Schema Fields
 schema_fields = getSchemaFields(sg, schema_list[0])
-# print(f'\n{schema_list[0]} schema_fields: {schema_fields.keys()}')
-# print(schema_fields["swaps"])
+print(f'\nschema_fields for "swaps": {schema_fields["swaps"]}')
+print(schema_fields["swaps"])
 print(f'swaps type is {type(schema_fields["swaps"])}')    # fieldmeta type
 
 # 3) Select queryable schema entities
