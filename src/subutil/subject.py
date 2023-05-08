@@ -87,6 +87,8 @@ class Subject:
         for key in query_field_dict.keys():
             return_dict[key] = getFieldPath(sg, key)
             
+        print(f' Queryable schema entities: {return_dict.keys()}')
+        
         return return_dict
 
 

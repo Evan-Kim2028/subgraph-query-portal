@@ -78,8 +78,6 @@ class SubgraphInterface:
         # get schema
         query_dict = self.subject.load_schema(sg_key)
 
-        print(f' Queryable entities: {query_dict.keys()}')
-
         # create modified filter dict that conforms to required Subgrounds query format
         new_filter_dict = create_filter_dict(filter_dict)
 
