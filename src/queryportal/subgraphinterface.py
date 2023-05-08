@@ -66,17 +66,19 @@ class SubgraphInterface:
                 assert len(self.subject.subgraphs) == 1 # check that there is only 1 subgraph endpoint loaded
                 single_key = list(self.subject.subgraphs.keys())
                 sg_key = self.subject.subgraphs[single_key[0]]
-                print(f'Querying subgraph endpoint: {single_key[0]}')
+                print(f'Querying endpoint: {single_key[0]}')
             except AssertionError:
-                print(f'{len(self.subject.subgraphs)} subgraph endpoints were loaded. Please specify 1 subgraph name.')
+                print(f'{len(self.subject.subgraphs)} endpoints were loaded. Please specify 1 subgraph name.')
                 return
         else:
             # load subgraph from the key name
             sg_key = self.subject.subgraphs[name]
-            print(f'Querying subgraph endpoint: {name}')
+            print(f'Querying endpoint: {name}')
 
         # get schema
         query_dict = self.subject.load_schema(sg_key)
+
+        print(f' Queryable entities: {query_dict.keys()}')
 
         # create modified filter dict that conforms to required Subgrounds query format
         new_filter_dict = create_filter_dict(filter_dict)
@@ -88,8 +90,6 @@ class SubgraphInterface:
         )
 
         matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = generic_qp)
-        
-        print(f'DEBUG matched_query_path output: {matched_query_path}')
         
         return self.query(
                     query_path=matched_query_path,

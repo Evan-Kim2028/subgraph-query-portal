@@ -92,7 +92,7 @@ def create_filter_dict(filter_dict: dict) -> dict:
         return output_dict
 
     else:               # if filter_dict is empty, return an empty dictionary. Note we need to return an empty dictionary instead of a None value because Subgrounds requires a dictionary as a required input
-        print('filter_dict is empty. Returning empty dictionary')
+        print('Return empty dict because filter_dict param is empty')
         return {}
     
 

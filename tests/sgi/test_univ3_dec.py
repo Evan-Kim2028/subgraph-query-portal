@@ -4,8 +4,9 @@ import polars as pl
 pl.Config.set_fmt_str_lengths(200)
 
 # instantiate Dex class with subgraph key
-eth = 'G3JZhmKKHC4mydRzD6kSz5fCWve5WDYYCyTFSJyv3SD5'
-arb = 'FQ6JYszEKApsBpAmiHesRsd9Ygc6mzmpNRANeVQFYoVX'
+eth = 'G3JZhmKKHC4mydRzD6kSz5fCWve5WDYYCyTFSJyv3SD5' # indexed on ethereum
+arb = 'FQ6JYszEKApsBpAmiHesRsd9Ygc6mzmpNRANeVQFYoVX' # indexed on arbitrum
+
 
 
 sgi = SubgraphInterface(
