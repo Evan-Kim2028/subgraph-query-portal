@@ -11,11 +11,14 @@ arb = 'FQ6JYszEKApsBpAmiHesRsd9Ygc6mzmpNRANeVQFYoVX' # indexed on arbitrum
 
 sgi = SubgraphInterface(
     endpoints={'univ3_eth': f'https://api.playgrounds.network/v1/proxy/subgraphs/id/{eth}',
-                'univ3_arb': f'https://api.playgrounds.network/v1/proxy/subgraphs/id/{arb}'
+                # 'univ3_arb': f'https://api.playgrounds.network/v1/proxy/subgraphs/id/{arb}'
                }
     )
 
 print(f'subject endpoints: {sgi.subject.subgraphs.keys()}')
+
+
+
 
 df1 = sgi.query_entity(
     entity='deposits',

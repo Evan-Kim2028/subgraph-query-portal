@@ -1,5 +1,6 @@
 from subutil.subject import Subject
 from subutil.schema_utils import *
+from subutil.word_utils import *
 
 from collections import OrderedDict
 
@@ -29,40 +30,56 @@ sg_key = list(sub.subgraphs.keys())[0]
 sg = sub.subgraphs[sg_key]
 
 # 2c) Get all schema entities
-schema_list = getSubgraphSchema(sg)
-print(schema_list)
+schema_entity_list = getSubgraphSchema(sg)
+print(schema_entity_list)
 
 # 2d) Get Schema Fields
-schema_fields = getSchemaFields(sg, schema_list[0])
-print(f'\nschema_fields for "swaps": {schema_fields["swaps"]}')
-print(schema_fields["swaps"])
-print(f'swaps type is {type(schema_fields["swaps"])}')    # fieldmeta type
+# schema_fields = getSchemaFields(sg, schema_entity_list[0])
+# print(f'\nschema_fields for "swaps": {schema_fields["swaps"]}')
+# print(schema_fields["swaps"])
+# print(f'swaps type is {type(schema_fields["swaps"])}')    # fieldmeta type
 
 # 3) Select queryable schema entities
-query_field = getQueryFields(sg, schema_list[schema_list.index('Query')])
+query_field = getQueryFields(sg, schema_entity_list[schema_entity_list.index('Query')])
 print(f'\nAll queryable fields are: {query_field.keys()}\n')
-# print(f'type is {type(query_field)}\n')    # dict type
-# print(f'\n{query_field["swaps"]}')
 
-my_fp = getFieldPath(sg, 'swaps')
-print(f'\nmy_fp is {my_fp} and type is {type(my_fp)}\n')
+query_entity_list = list(query_field.keys())
+
+levenshtein_dict = make_levenshtein_dict(query_entity_list, schema_entity_list)
+
+print(f'\nLevenshtein dict: {levenshtein_dict}')
+
+
+# get cols using Levenshtein dict
+col_fields = getColFields(sg, levenshtein_dict['swaps'])
+col_fields_dict = {key: value for key, value in col_fields}
+
+print(col_fields_dict.keys())
+print('\ndone')
 
 
 
-# get col fields
-col_fields = getColFields(sg, schema_list[0])
-print(f'\n{schema_list[0]} col_fields: {col_fields}')   # the value outputs are just strings...
 
-# TEST STUFF
-col_dict = OrderedDict(col_fields)
-print(f'\ndict: {col_dict}')
 
-concrete_obj = DynamicClassGenerator.create('MyDynamicClass', col_dict)
-print(concrete_obj.deposits)
+
+
+
+
+
+
+
+
+
+
+# # TEST STUFF
+# col_dict = OrderedDict(col_fields)
+# print(f'\ndict: {col_dict}')
+
+
+# concrete_obj = DynamicClassGenerator.create('MyDynamicClass', col_dict)
+# print(concrete_obj)
 
 
 # concrete_obj = MyFixedClass(**col_dict)
 # print(concrete_obj.account)
 
-
-print('\ndone')

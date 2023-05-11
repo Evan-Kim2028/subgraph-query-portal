@@ -26,6 +26,8 @@ query_paths = [
     'amountIn',
     ]
 
+# query_paths = ['id', 'hash', 'nonce', 'logIndex', 'gasLimit', 'gasUsed', 'gasPrice', 'protocol', 'account', 'pool', 'blockNumber', 'timestamp', 'tick', 'tokenIn', 'amountIn', 'amountInUSD', 'tokenOut', 'amountOut', 'amountOutUSD']
+
 filter_dict = {'tokenIn_symbol': "WETH"}
 
 for subgraph_name in list(univ3.subject.subgraphs.keys()):
