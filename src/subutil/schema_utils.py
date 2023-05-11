@@ -1,6 +1,7 @@
 
 from typing import Any, Dict, Type
 
+from subutil.word_utils import *
 
 from subgrounds import Subgrounds
 from subgrounds.subgraph import Subgraph, FieldPath
@@ -57,6 +58,8 @@ def getQueryFields(sg: Subgrounds, schema: str) -> dict:
 
 def getFieldPath(sg: Subgrounds, field: str,  operation: str ='Query') -> FieldPath:
     """
+    DEPRECATED, currently not used: 
+    
     getFieldPath converts a string to a FieldPath object. In a Subgrounds query, the format follows subgrounds.schema.FieldPath.
     :param str field: Enter the string that will be converted to a FieldPath
     :param str operation: Enter one of the following - 'Query', 'Mutation', or 'Subscription'. Default is 'Query' because that is most commonly used. 
@@ -65,24 +68,30 @@ def getFieldPath(sg: Subgrounds, field: str,  operation: str ='Query') -> FieldP
     return sg.__getattribute__(operation).__getattribute__(field)
     
 
-
 def getColFields(sg: Subgrounds, schema_str: str):
     """
-    getColFields gets a list of fields from the swaps_entity schema.
+    getColFields gets a list of fields from the schema.
     """
     return list((field.name, TypeRef.graphql(field.type_)) for field in sg.__getattribute__(schema_str)._object.fields)
 
+def getQueryPaths(sg: Subgrounds, entity_str: str) -> dict:
+    """
+    Returns all fields from the queryable entity
+    """
 
+    # Get Subgraph Schema Entities
+    schema_entity_list = getSubgraphSchema(sg)
+    # Get Queryable Subgraph Entities
+    query_field = getQueryFields(sg, schema_entity_list[schema_entity_list.index('Query')])
 
-## These classes are used to generate dictionary objects from schema fields. Not sure if they are useful or not at this time (4.25.23)
-class DynamicClassGenerator:
-    @staticmethod
-    def create(name: str, class_vars: Dict[str, Any]) -> Type:
-        return type(name, (), class_vars)
+    # turn query fields from dict to list
+    query_entity_list = list(query_field.keys())
 
+    # compute lvenshtein distance dict
+    levenshtein_dict = make_levenshtein_dict(query_entity_list, schema_entity_list)
 
-class MyFixedClass(DynamicClassGenerator):
-    def __init__(self, **kwargs):
-        super().__init__()
-        for k, v in kwargs.items():
-            setattr(self, k, v)
+    # get cols using Levenshtein dict
+    col_fields = getColFields(sg, levenshtein_dict[entity_str])
+    col_fields_dict = {key: value for key, value in col_fields}
+
+    return col_fields_dict

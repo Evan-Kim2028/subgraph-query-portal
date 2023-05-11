@@ -4,6 +4,7 @@ import os
 from dataclasses import dataclass, field
 from subutil.fieldpath_utils import *
 from subutil.schema_utils import *
+from subutil.word_utils import *
 
 from subgrounds import Subgrounds
 from subgrounds.subgraph import Subgraph
@@ -87,11 +88,31 @@ class Subject:
         for key in query_field_dict.keys():
             return_dict[key] = getFieldPath(sg, key)
             
-        print(f' Queryable schema entities: {return_dict.keys()}')
+        # print(f' Queryable schema entities: {return_dict.keys()}')
         
         return return_dict
 
+    def getQueryPaths(self, sg: Subgrounds, entity_str: str) -> dict:
+        """
+        Returns all fields from the queryable entity
+        """
 
+        # Get Subgraph Schema Entities
+        schema_entity_list = getSubgraphSchema(sg)
+        # Get Queryable Subgraph Entities
+        query_field = getQueryFields(sg, schema_entity_list[schema_entity_list.index('Query')])
+
+        # turn query fields from dict to list
+        query_entity_list = list(query_field.keys())
+
+        # compute lvenshtein distance dict
+        levenshtein_dict = make_levenshtein_dict(query_entity_list, schema_entity_list)
+
+        # get cols using Levenshtein dict
+        col_fields = getColFields(sg, levenshtein_dict[entity_str])
+        col_fields_dict = {key: value for key, value in col_fields}
+
+        return col_fields_dict
 
     
 
