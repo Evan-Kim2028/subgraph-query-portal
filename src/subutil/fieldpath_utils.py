@@ -23,7 +23,8 @@ def get_subgrounds():
 
 def match_query_paths(default_query_path: FieldPath, query_paths: list[str] = None) -> FieldPath | list[FieldPath]:
     """
-    Matches query_paths to query_path_cols.
+   `match_query_paths` matches `FieldPath` `str` names to the `FieldPath` objects. 
+   This is needed as a preprocessing step to submit the query to Subgrounds.
     """
     match query_paths:
         case None:
@@ -95,7 +96,15 @@ def create_filter_dict(filter_dict: dict) -> dict:
         print('Return empty dict because filter_dict param is empty')
         return {}
     
-
+def match_orderBy(field_name: str):
+    # Either it's None, it's 'timestamp', or if timestamp doesn't exist than its id
+    match field_name:
+        case None:
+            return None
+        case 'timestamp':
+            return 'timestamp'
+        case _:
+            return 'id'
 
 
 
