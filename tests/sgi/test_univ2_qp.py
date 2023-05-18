@@ -9,12 +9,12 @@ pl.Config.set_fmt_str_lengths(200)
 # Decentralized
 sgi = SubgraphInterface(endpoints={
     # https://thegraph.com/explorer/subgraphs/ELUcwgpm14LKPLrBRuVvPvNKHQ9HvwmtKgKSH6123cr7?view=Overview&chain=mainnet
-    'uniswa-v2-ethereum': 'https://api.playgrounds.network/v1/proxy/subgraphs/id/2szAn45skWZFLPUbxFEtjiEzT1FMW8Ff5ReUPbZbQxtt'
+    'uniswap-v2-ethereum': 'https://api.playgrounds.network/v1/proxy/subgraphs/id/2szAn45skWZFLPUbxFEtjiEzT1FMW8Ff5ReUPbZbQxtt'
     })
 
 
 # print subgraph keys
-univ3_dict = sgi.subject.getQueryPaths(sgi.subject.subgraphs['uniswa-v2-ethereum'], 'swaps')
+univ3_dict = sgi.subject.getQueryPaths(sgi.subject.subgraphs['uniswap-v2-ethereum'], 'swaps')
 
 
 # print fields for swaps entity
@@ -30,7 +30,7 @@ univ2 = sgi.query_entity(
     query_paths = query_paths,
     orderBy='amount1In',
     filter_dict={'amount1In_gt': 1000},
-    name='uniswa-v2-ethereum', 
+    name='uniswap-v2-ethereum', 
     )
 
 print(univ2)
