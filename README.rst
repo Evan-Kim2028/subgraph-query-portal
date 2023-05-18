@@ -39,8 +39,8 @@ Subgraph Query Portal
 Tools
 ==========
 This project utilizes Subgraph endpoints from `Messari <https://messari.io/report/the-graph-foundation-awards-messari-usd12-5mm-in-first-ever-core-subgraph-developer-grant-to-build-and-standardize-subgraphs>`__ 
-and `Subgrounds <https://github.com/0xPlaygrounds/subgrounds>`__, an open-source Python library built by `Playgrounds <https://playgrounds.network/>`__. 
-Data is transformed using `Polars <https://github.com/pola-rs/polars>`__.
+and `Subgrounds <https://github.com/0xPlaygrounds/subgrounds>`_, an open-source Python library built by `Playgrounds <https://playgrounds.network/>`_. 
+Data is transformed using `Polars <https://github.com/pola-rs/polars>`_.
 
 Subgraphs
 ---------
@@ -84,7 +84,7 @@ Examples
 ========================
 Run the following commands from the root directory of the project.
 
-For a list of examples, please see `https://github.com/Evan-Kim2028/queryportal_notebooks`_ which is a repository of queryportal notebook examples.
+For a list of examples, please see `<https://github.com/Evan-Kim2028/queryportal_notebooks>`_ which is a repository of queryportal notebook examples.
 
 
 
@@ -128,6 +128,6 @@ Thus the main difference for querying the Graph Network compared to the hosted n
 look different and be submitted as a dictionary. 
 
 The decentralized endpoint formatting is :literal:`https://api.playgrounds.network/v1/proxy/subgraphs/id/subgraph_id` 
-where subgraph_id is the ID of the subgraph. These can be found by searching `https://thegraph.com/explorer`_.
-For example the subgraph key for uniswap is found here `https://thegraph.com/explorer/subgraphs/2szAn45skWZFLPUbxFEtjiEzT1FMW8Ff5ReUPbZbQxtt?view=Overview&chain=mainnet`_ 
+where subgraph_id is the ID of the subgraph. These can be found by searching `<https://thegraph.com/explorer>`_.
+For example the subgraph key for uniswap is found here `<https://thegraph.com/explorer/subgraphs/2szAn45skWZFLPUbxFEtjiEzT1FMW8Ff5ReUPbZbQxtt?view=Overview&chain=mainnet>`_ 
 and is :literal:`2szAn45skWZFLPUbxFEtjiEzT1FMW8Ff5ReUPbZbQxtt`.
