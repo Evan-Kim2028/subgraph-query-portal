@@ -29,12 +29,11 @@
 
 |
 
-=====================
+======================
 Subgraph Query Portal
-=====================
+======================
 
-:literal:`queryportal` a curated collection of Subgraph query public goods and tools to obtain cross-chain data for both analysts and subgraph developers. 
-Similar to SQL views, :literal:`queryportal` queries are curated snapshots of data that can be composed with other queries.
+:literal:`queryportal` is a Subgraph query management library and makes it easy to query cross-chain, cross-subgraph data on the decentralized Graph Network.
 
 
 Tools
@@ -57,9 +56,9 @@ Polars
 Polars is a blazingly fast DataFrames library implemented in Rust using Apache Arrow Columnar Format as the memory model.
 
 Library Dependencies
-============
+====================
 * Python >= 3.10
-* Subgrounds = 1.2.0
+* Subgrounds = 1.5.2
 * Polars
 * Pyarrow
 
@@ -85,17 +84,7 @@ Examples
 ========================
 Run the following commands from the root directory of the project.
 
-1. Query all CoW Trades data
-    
-   .. code:: bash
-
-      python tests/test_cow.py
-
-2. Query all Univ3 Swap data:
-
-   .. code:: bash
-
-      python examples/test_dex_swaps_and_tokens.py
+For a list of examples, please see `https://github.com/Evan-Kim2028/queryportal_notebooks`__ which is a repository of queryportal notebook examples.
 
 
 
@@ -121,7 +110,7 @@ This may result in conflicting versions of the package.
 
 
 For Developers
-========================
+===============
 Queryinterface is an abstract class that defines the interface for all subgraph queries via the :literal:`query()` method.
 
 Some reasons why a developer would want to contribute their subgraph queries to this project:
@@ -130,8 +119,15 @@ Some reasons why a developer would want to contribute their subgraph queries to 
 - Use existing subgraph queries as building blocks for other queries
 
 
-Query the Decentralized Network (In Progress)
-========================
-Create a .env file in the directory and enter the playgrounds api key PG_KEY =api-key
+Query the Decentralized Graph Network 
+=====================================
+Create a :literal:`.env` file in the directory and enter the playgrounds api key PG_KEY =api-key
 
-Then load a header into subgrounds object...this will be a slightly different input in queryportal
+Since decentralized endpoints are defined by hashes, there is no easy default for naming decentralized subgraphs. 
+Thus the main difference for querying the Graph Network compared to the hosted network is that the endpoint will 
+look different and be submitted as a dictionary. 
+
+The decentralized endpoint formatting is :literal:`https://api.playgrounds.network/v1/proxy/subgraphs/id/subgraph_id` 
+where subgraph_id is the ID of the subgraph. These can be found by searching `https://thegraph.com/explorer`__.
+For example the subgraph key for uniswap is found here :literal:`https://thegraph.com/explorer/subgraphs/2szAn45skWZFLPUbxFEtjiEzT1FMW8Ff5ReUPbZbQxtt?view=Overview&chain=mainnet` 
+and is :literal:`2szAn45skWZFLPUbxFEtjiEzT1FMW8Ff5ReUPbZbQxtt`.
