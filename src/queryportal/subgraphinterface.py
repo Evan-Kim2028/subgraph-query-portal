@@ -22,11 +22,16 @@ class SubgraphInterface:
             self, 
             query_path: FieldPath | list[FieldPath],
             saved_file_name: str = None,
-            add_endpoint_col: bool = True
+            graphql_query_fmt: bool = False
             ) -> pl.DataFrame:
         """
         `query` is an internal method used by `query_entity` that sends `query_path`, which is a list of `FieldPath` Subgrounds objects to Subgrounds and returns a polars DataFrame of the query results.
         """
+
+        if graphql_query_fmt:
+            graphql_query_path = self.subject.sg.mk_request(query_path).graphql
+            print(f'graphql query path: {graphql_query_path}')
+
         # Obtain json dict of query results
         query_dict = self.subject.sg.query_json(query_path)
 
@@ -57,7 +62,7 @@ class SubgraphInterface:
 
     @timeit
     @df_describe
-    def query_entity(self, name: str = None, entity:str = None, query_paths: list[str] = None, orderBy: str = None, query_size=5, filter_dict={}, saved_file_name=None, add_endpoint_col=True) -> pl.DataFrame:
+    def query_entity(self, name: str = None, entity:str = None, query_paths: list[str] = None, orderBy: str = None, query_size=5, filter_dict={}, saved_file_name=None, graphql_query_fmt=False) -> pl.DataFrame:
         """
         `query_entity` is the main query method for querying Subgraphs. 
         
@@ -131,5 +136,5 @@ class SubgraphInterface:
         return self.query(
                     query_path=matched_query_path,
                     saved_file_name=saved_file_name,
-                    add_endpoint_col=add_endpoint_col
+                    graphql_query_fmt=graphql_query_fmt
                 )
