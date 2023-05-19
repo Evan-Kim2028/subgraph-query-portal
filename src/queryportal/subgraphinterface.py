@@ -33,6 +33,11 @@ class SubgraphInterface:
         # get nested json key. Subgrounds creates a hash blob for internal purposes so we need the keys that come after the hash blob.
         first_key = next(iter(query_dict[0].keys()))
 
+        # check if the first key is empty. If it is then return an error message
+        if query_dict[0][first_key] == []:
+            print(f'query_dict[0][first_key] is empty: {query_dict[0][first_key]}')
+            return
+        
         pl_df = pl.from_dicts(query_dict[0][first_key])
 
         # convert structs to columns
