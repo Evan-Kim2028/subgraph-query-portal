@@ -62,7 +62,7 @@ class SubgraphInterface:
 
     @timeit
     @df_describe
-    def query_entity(self, name: str = None, entity:str = None, query_paths: list[str] = None, orderBy: str = None, query_size=5, filter_dict={}, saved_file_name=None, graphql_query_fmt=False) -> pl.DataFrame:
+    def query_entity(self, name: str = None, entity:str = None, query_size=5, query_paths: list[str] = None, orderBy: str = None,  block_filter = {}, filter_dict={}, saved_file_name=None, graphql_query_fmt=False) -> pl.DataFrame:
         """
         `query_entity` is the main query method for querying Subgraphs. 
         
@@ -74,14 +74,17 @@ class SubgraphInterface:
         entity : str
             name of the subgraph entity being queried
 
+        query_size : int
+            number of results to return. Default is 5.
+
         query_paths : list[str]
             list of fieldpaths that will be queried. If not provided, the method will query all fields by default.
 
         orderBy : str
             fieldpath to order the query results by. If not provided, the method will not order the results.
 
-        query_size : int
-            number of results to return. Default is 5.
+        block_filter : dict
+            `block` is a special keyword that access archival indexer states based on the block number. Default is an empty dictionary which is equivalent to not using the filter.
 
         filter_dict : dict
             query filter parameters stored as a dictionary
@@ -116,19 +119,23 @@ class SubgraphInterface:
         # create modified filter dict that conforms to required Subgrounds query format
         new_filter_dict = create_filter_dict(filter_dict)
 
+        print(f'debug block filter: {block_filter}')
+
         match orderBy:
             case None:
                 # no order is specified
                 generic_qp = query_dict[entity](
                     first=query_size,
-                    where = new_filter_dict
+                    where = new_filter_dict,
+                    block = block_filter
                 )
             case _:
                 # order is specified
                 generic_qp = query_dict[entity](
                     first=query_size,
                     where = new_filter_dict,
-                    orderBy = orderBy
+                    orderBy = orderBy,
+                    block = block_filter
                 )
         
         matched_query_path = match_query_paths(query_paths=query_paths, default_query_path = generic_qp)
