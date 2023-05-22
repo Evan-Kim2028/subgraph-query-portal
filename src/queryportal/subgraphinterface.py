@@ -119,22 +119,21 @@ class SubgraphInterface:
         # create modified filter dict that conforms to required Subgrounds query format
         new_filter_dict = create_filter_dict(filter_dict)
 
-        print(f'debug block filter: {block_filter}')
-
         match orderBy:
             case None:
                 # no order is specified
                 generic_qp = query_dict[entity](
-                    first=query_size,
+                    first = query_size,
                     where = new_filter_dict,
                     block = block_filter
                 )
             case _:
                 # order is specified
                 generic_qp = query_dict[entity](
-                    first=query_size,
+                    first = query_size,
                     where = new_filter_dict,
                     orderBy = orderBy,
+                    orderDirection = "desc",
                     block = block_filter
                 )
         
