@@ -43,7 +43,7 @@ class SubgraphInterface:
             print(f'query_dict[0][first_key] is empty: {query_dict[0][first_key]}')
             return
         
-        pl_df = pl.from_dicts(query_dict[0][first_key])
+        pl_df = pl.from_dicts(query_dict[0][first_key], infer_schema_length=None)
 
         # convert structs to columns
         pl_df = fmt_dict_cols(pl_df)
