@@ -54,8 +54,6 @@ class SubgraphInterface:
         if saved_file_name is not None:
             save_file(final_df, saved_file_name)
 
-        # drop json "id". This is an internal hash created by Subgrounds and is always returned by default. `id` gets dropped because its an internal helper and there is no reason to expose it.
-        final_df = final_df.drop('id')
         # Return the converted dataframe
         return final_df
     
